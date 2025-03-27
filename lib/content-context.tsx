@@ -268,181 +268,272 @@ const initialContent: ContentState = {
 // Content provider component
 export function ContentProvider({ children }: { children: React.ReactNode }) {
   const [content, setContent] = useState<ContentState>(initialContent)
+  const [loading, setLoading] = useState(true)
 
   // Load content from localStorage on mount
   useEffect(() => {
-    const storedContent = localStorage.getItem("ngm-content")
-    if (storedContent) {
-      try {
-        setContent(JSON.parse(storedContent))
-      } catch (error) {
-        console.error("Failed to parse stored content:", error)
+    try {
+      const savedContent = localStorage.getItem("ngm-content")
+      if (savedContent) {
+        const parsedContent = JSON.parse(savedContent)
+        console.log("Loaded saved content:", parsedContent)
+        setContent(parsedContent)
       }
+    } catch (error) {
+      console.error("Error loading saved content:", error)
+    } finally {
+      setLoading(false)
     }
   }, [])
 
   // Save content to localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem("ngm-content", JSON.stringify(content))
+    try {
+      localStorage.setItem("ngm-content", JSON.stringify(content))
+      console.log("Saved content to localStorage")
+    } catch (error) {
+      console.error("Error saving content:", error)
+    }
   }, [content])
 
   // Update entire content or sections
   const updateContent = (newContent: Partial<ContentState>) => {
-    setContent((prev) => ({ ...prev, ...newContent }))
+    try {
+      setContent((prev) => ({ ...prev, ...newContent }))
+      console.log("Content updated:", newContent)
+    } catch (error) {
+      console.error("Error updating content:", error)
+    }
   }
 
   // Update a specific service
   const updateService = (index: number, service: Service) => {
-    setContent((prev) => {
-      const newServices = [...prev.services]
-      newServices[index] = service
-      return { ...prev, services: newServices }
-    })
+    try {
+      setContent((prev) => ({
+        ...prev,
+        services: prev.services.map((s, i) => (i === index ? service : s)),
+      }))
+      console.log("Service updated:", { index, service })
+    } catch (error) {
+      console.error("Error updating service:", error)
+    }
   }
 
   // Update a specific testimonial
   const updateTestimonial = (index: number, testimonial: Testimonial) => {
-    setContent((prev) => {
-      const newTestimonials = [...prev.testimonials]
-      newTestimonials[index] = testimonial
-      return { ...prev, testimonials: newTestimonials }
-    })
+    try {
+      setContent((prev) => ({
+        ...prev,
+        testimonials: prev.testimonials.map((t, i) => (i === index ? testimonial : t)),
+      }))
+      console.log("Testimonial updated:", { index, testimonial })
+    } catch (error) {
+      console.error("Error updating testimonial:", error)
+    }
   }
 
   // Update a specific gallery image
   const updateGalleryImage = (index: number, image: GalleryImage) => {
-    setContent((prev) => {
-      const newGalleryImages = [...prev.galleryImages]
-      newGalleryImages[index] = image
-      return { ...prev, galleryImages: newGalleryImages }
-    })
+    try {
+      setContent((prev) => ({
+        ...prev,
+        galleryImages: prev.galleryImages.map((img, i) => (i === index ? image : img)),
+      }))
+      console.log("Gallery image updated:", { index, image })
+    } catch (error) {
+      console.error("Error updating gallery image:", error)
+    }
   }
 
   // Update a specific review
   const updateReview = (index: number, review: Review) => {
-    setContent((prev) => {
-      const newReviews = [...prev.reviews]
-      newReviews[index] = review
-      return { ...prev, reviews: newReviews }
-    })
+    try {
+      setContent((prev) => ({
+        ...prev,
+        reviews: prev.reviews.map((r, i) => (i === index ? review : r)),
+      }))
+      console.log("Review updated:", { index, review })
+    } catch (error) {
+      console.error("Error updating review:", error)
+    }
   }
 
   // Update a specific blog post
   const updateBlogPost = (index: number, post: BlogPost) => {
-    setContent((prev) => {
-      const newBlogPosts = [...prev.blogPosts]
-      newBlogPosts[index] = post
-      return { ...prev, blogPosts: newBlogPosts }
-    })
+    try {
+      setContent((prev) => ({
+        ...prev,
+        blogPosts: prev.blogPosts.map((p, i) => (i === index ? post : p)),
+      }))
+      console.log("Blog post updated:", { index, post })
+    } catch (error) {
+      console.error("Error updating blog post:", error)
+    }
   }
 
   // Add a new service
   const addService = (service: Service) => {
-    setContent((prev) => ({
-      ...prev,
-      services: [...prev.services, service],
-    }))
+    try {
+      setContent((prev) => ({
+        ...prev,
+        services: [...prev.services, service],
+      }))
+      console.log("Service added:", service)
+    } catch (error) {
+      console.error("Error adding service:", error)
+    }
   }
 
   // Add a new testimonial
   const addTestimonial = (testimonial: Testimonial) => {
-    setContent((prev) => ({
-      ...prev,
-      testimonials: [...prev.testimonials, testimonial],
-    }))
+    try {
+      setContent((prev) => ({
+        ...prev,
+        testimonials: [...prev.testimonials, testimonial],
+      }))
+      console.log("Testimonial added:", testimonial)
+    } catch (error) {
+      console.error("Error adding testimonial:", error)
+    }
   }
 
   // Add a new gallery image
   const addGalleryImage = (image: GalleryImage) => {
-    setContent((prev) => ({
-      ...prev,
-      galleryImages: [...prev.galleryImages, image],
-    }))
+    try {
+      setContent((prev) => ({
+        ...prev,
+        galleryImages: [...prev.galleryImages, image],
+      }))
+      console.log("Gallery image added:", image)
+    } catch (error) {
+      console.error("Error adding gallery image:", error)
+    }
   }
 
   // Add a new review
   const addReview = (review: Review) => {
-    setContent((prev) => ({
-      ...prev,
-      reviews: [...prev.reviews, review],
-    }))
+    try {
+      setContent((prev) => ({
+        ...prev,
+        reviews: [...prev.reviews, review],
+      }))
+      console.log("Review added:", review)
+    } catch (error) {
+      console.error("Error adding review:", error)
+    }
   }
 
   // Add a new blog post
   const addBlogPost = (post: BlogPost) => {
-    setContent((prev) => ({
-      ...prev,
-      blogPosts: [...prev.blogPosts, post],
-    }))
+    try {
+      setContent((prev) => ({
+        ...prev,
+        blogPosts: [...prev.blogPosts, post],
+      }))
+      console.log("Blog post added:", post)
+    } catch (error) {
+      console.error("Error adding blog post:", error)
+    }
   }
 
   // Remove a service
   const removeService = (index: number) => {
-    setContent((prev) => ({
-      ...prev,
-      services: prev.services.filter((_, i) => i !== index),
-    }))
+    try {
+      setContent((prev) => ({
+        ...prev,
+        services: prev.services.filter((_, i) => i !== index),
+      }))
+      console.log("Service removed:", index)
+    } catch (error) {
+      console.error("Error removing service:", error)
+    }
   }
 
   // Remove a testimonial
   const removeTestimonial = (index: number) => {
-    setContent((prev) => ({
-      ...prev,
-      testimonials: prev.testimonials.filter((_, i) => i !== index),
-    }))
+    try {
+      setContent((prev) => ({
+        ...prev,
+        testimonials: prev.testimonials.filter((_, i) => i !== index),
+      }))
+      console.log("Testimonial removed:", index)
+    } catch (error) {
+      console.error("Error removing testimonial:", error)
+    }
   }
 
   // Remove a gallery image
   const removeGalleryImage = (index: number) => {
-    setContent((prev) => ({
-      ...prev,
-      galleryImages: prev.galleryImages.filter((_, i) => i !== index),
-    }))
+    try {
+      setContent((prev) => ({
+        ...prev,
+        galleryImages: prev.galleryImages.filter((_, i) => i !== index),
+      }))
+      console.log("Gallery image removed:", index)
+    } catch (error) {
+      console.error("Error removing gallery image:", error)
+    }
   }
 
   // Remove a review
   const removeReview = (index: number) => {
-    setContent((prev) => ({
-      ...prev,
-      reviews: prev.reviews.filter((_, i) => i !== index),
-    }))
+    try {
+      setContent((prev) => ({
+        ...prev,
+        reviews: prev.reviews.filter((_, i) => i !== index),
+      }))
+      console.log("Review removed:", index)
+    } catch (error) {
+      console.error("Error removing review:", error)
+    }
   }
 
   // Remove a blog post
   const removeBlogPost = (index: number) => {
-    setContent((prev) => ({
-      ...prev,
-      blogPosts: prev.blogPosts.filter((_, i) => i !== index),
-    }))
+    try {
+      setContent((prev) => ({
+        ...prev,
+        blogPosts: prev.blogPosts.filter((_, i) => i !== index),
+      }))
+      console.log("Blog post removed:", index)
+    } catch (error) {
+      console.error("Error removing blog post:", error)
+    }
   }
 
-  return (
-    <ContentContext.Provider
-      value={{
-        content,
-        updateContent,
-        updateService,
-        updateTestimonial,
-        updateGalleryImage,
-        updateReview,
-        updateBlogPost,
-        addService,
-        addTestimonial,
-        addGalleryImage,
-        addReview,
-        addBlogPost,
-        removeService,
-        removeTestimonial,
-        removeGalleryImage,
-        removeReview,
-        removeBlogPost,
-      }}
-    >
-      {children}
-    </ContentContext.Provider>
-  )
+  const value = {
+    content,
+    updateContent,
+    updateService,
+    updateTestimonial,
+    updateGalleryImage,
+    updateReview,
+    updateBlogPost,
+    addService,
+    addTestimonial,
+    addGalleryImage,
+    addReview,
+    addBlogPost,
+    removeService,
+    removeTestimonial,
+    removeGalleryImage,
+    removeReview,
+    removeBlogPost,
+  }
+
+  if (loading) {
+    return <div className="flex items-center justify-center min-h-screen">Loading...</div>
+  }
+
+  return <ContentContext.Provider value={value}>{children}</ContentContext.Provider>
 }
 
 // Hook to use content context
-export const useContent = () => useContext(ContentContext)
+export const useContent = () => {
+  const context = useContext(ContentContext)
+  if (!context) {
+    throw new Error("useContent must be used within a ContentProvider")
+  }
+  return context
+}
 
