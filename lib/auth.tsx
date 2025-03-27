@@ -22,7 +22,7 @@ type AuthContextType = {
 // Mock user for demo purposes
 const MOCK_USER: User = {
   id: "1",
-  email: process.env.NEXT_PUBLIC_ADMIN_EMAIL || "admin@ngmlandscape.ca",
+  email: "admin@ngmlandscape.ca",
   name: "Admin User",
   role: "admin",
 }
@@ -49,15 +49,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setLoading(false)
   }, [])
 
-  // Login function - in a real app, this would call an API
+  // Login function
   const login = async (email: string, password: string) => {
     try {
-      // Simple mock authentication - in production, use proper API calls
-      if (email === process.env.NEXT_PUBLIC_ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
+      // Simple authentication
+      if (email === "admin@ngmlandscape.ca" && password === "admin123") {
         setUser(MOCK_USER)
-        if (typeof window !== 'undefined') {
-          localStorage.setItem("ngm-admin-user", JSON.stringify(MOCK_USER))
-        }
+        localStorage.setItem("ngm-admin-user", JSON.stringify(MOCK_USER))
         return true
       }
       return false
@@ -70,9 +68,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // Logout function
   const logout = () => {
     setUser(null)
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem("ngm-admin-user")
-    }
+    localStorage.removeItem("ngm-admin-user")
   }
 
   return <AuthContext.Provider value={{ user, loading, login, logout }}>{children}</AuthContext.Provider>
