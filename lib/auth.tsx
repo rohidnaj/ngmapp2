@@ -42,22 +42,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Check for existing session on mount
   useEffect(() => {
-    const storedUser = localStorage.getItem("ngm-admin-user")
-    if (storedUser) {
-      setUser(JSON.parse(storedUser))
+    try {
+      const storedUser = localStorage.getItem("ngm-admin-user")
+      if (storedUser) {
+        const parsedUser = JSON.parse(storedUser)
+        console.log("Found stored user:", parsedUser)
+        setUser(parsedUser)
+      }
+    } catch (error) {
+      console.error("Error reading stored user:", error)
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
   }, [])
 
   // Login function
   const login = async (email: string, password: string) => {
     try {
+      console.log("Attempting login with:", { email, password })
+      
       // Simple authentication
       if (email === "admin@ngmlandscape.ca" && password === "admin123") {
+        console.log("Login successful")
         setUser(MOCK_USER)
         localStorage.setItem("ngm-admin-user", JSON.stringify(MOCK_USER))
         return true
       }
+      
+      console.log("Login failed - invalid credentials")
       return false
     } catch (error) {
       console.error('Login error:', error)
@@ -67,15 +79,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Logout function
   const logout = () => {
+    console.log("Logging out")
     setUser(null)
     localStorage.removeItem("ngm-admin-user")
   }
 
-  return <AuthContext.Provider value={{ user, loading, login, logout }}>{children}</AuthContext.Provider>
+  const value = {
+    user,
+    loading,
+    login,
+    logout,
+  }
+
+  console.log("AuthProvider state:", { user, loading })
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
 
 // Hook to use auth context
-export const useAuth = () => useContext(AuthContext)
+export const useAuth = () => {
+  const context = useContext(AuthContext)
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider")
+  }
+  return context
+}
 
 // HOC to protect admin routes
 export function withAuth(Component: React.ComponentType) {
