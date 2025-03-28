@@ -3,6 +3,7 @@
 import type React from "react"
 
 import { createContext, useContext, useState, useEffect } from "react"
+import { saveContentToServer, loadContentFromServer } from "@/app/actions"
 
 // Define types for all content sections
 export type Service = {
@@ -273,34 +274,77 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true)
   const [lastRefresh, setLastRefresh] = useState<number>(Date.now())
 
-  // Load content from localStorage on mount or when refresh is triggered
+  // Load content from server and localStorage on mount or when refresh is triggered
   useEffect(() => {
-    try {
-      const savedContent = localStorage.getItem("ngm-content")
-      if (savedContent) {
-        const parsedContent = JSON.parse(savedContent)
-        console.log("Loaded saved content:", parsedContent)
-        setContent(parsedContent)
-      } else {
-        // Save initial content to localStorage if no saved content exists
-        localStorage.setItem("ngm-content", JSON.stringify(initialContent))
+    async function loadContentData() {
+      try {
+        // First try to load from the server
+        const serverResult = await loadContentFromServer();
+        
+        // If server has content, use it
+        if (serverResult.success && serverResult.content) {
+          console.log("Loaded content from server");
+          setContent(serverResult.content);
+          // Update localStorage with server content
+          localStorage.setItem("ngm-content", JSON.stringify(serverResult.content));
+        } else {
+          // If no server content, try localStorage
+          const savedContent = localStorage.getItem("ngm-content");
+          if (savedContent) {
+            const parsedContent = JSON.parse(savedContent);
+            console.log("Loaded saved content from localStorage");
+            setContent(parsedContent);
+            
+            // Save localStorage content to server
+            await saveContentToServer(parsedContent);
+          } else {
+            // If no content anywhere, use initial and save it
+            localStorage.setItem("ngm-content", JSON.stringify(initialContent));
+            await saveContentToServer(initialContent);
+          }
+        }
+      } catch (error) {
+        console.error("Error loading content:", error);
+        
+        // Fallback to localStorage if server fails
+        try {
+          const savedContent = localStorage.getItem("ngm-content");
+          if (savedContent) {
+            setContent(JSON.parse(savedContent));
+          }
+        } catch (localError) {
+          console.error("Error loading from localStorage:", localError);
+        }
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error("Error loading saved content:", error)
-    } finally {
-      setLoading(false)
     }
+    
+    loadContentData();
   }, [lastRefresh])
 
   // Save content to localStorage whenever it changes
   useEffect(() => {
     if (!loading) { // Only save after initial load to prevent overwriting with default values
-      try {
-        localStorage.setItem("ngm-content", JSON.stringify(content))
-        console.log("Saved content to localStorage")
-      } catch (error) {
-        console.error("Error saving content:", error)
+      async function saveContentData() {
+        try {
+          // Save to localStorage
+          localStorage.setItem("ngm-content", JSON.stringify(content))
+          console.log("Saved content to localStorage")
+          
+          // Also save to server
+          const result = await saveContentToServer(content)
+          if (result.success) {
+            console.log("Saved content to server")
+          } else {
+            console.error("Failed to save to server:", result.message)
+          }
+        } catch (error) {
+          console.error("Error saving content:", error)
+        }
       }
+      
+      saveContentData()
     }
   }, [content, loading])
 
@@ -509,13 +553,27 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  // Add a refresh content function that reloads from localStorage
-  const refreshContent = () => {
+  // Add a refresh content function that reloads from server
+  const refreshContent = async () => {
     try {
-      console.log("Refreshing content from localStorage")
-      setLastRefresh(Date.now())
+      console.log("Refreshing content from server")
+      
+      // Try to get server content directly
+      const serverResult = await loadContentFromServer()
+      if (serverResult.success && serverResult.content) {
+        // Update state with server content
+        setContent(serverResult.content)
+        // Also update localStorage
+        localStorage.setItem("ngm-content", JSON.stringify(serverResult.content))
+        console.log("Content refreshed from server")
+      } else {
+        // If server fetch fails, just trigger the useEffect by updating lastRefresh
+        setLastRefresh(Date.now())
+      }
     } catch (error) {
       console.error("Error refreshing content:", error)
+      // Fall back to triggering the useEffect
+      setLastRefresh(Date.now())
     }
   }
 

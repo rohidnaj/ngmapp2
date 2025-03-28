@@ -14,7 +14,7 @@ interface AdminLayoutProps {
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
   const { logout } = useAuth()
-  const { content } = useContent()
+  const { content, refreshContent } = useContent()
   const router = useRouter()
   const pathname = usePathname()
   const [isMobile, setIsMobile] = useState(false)
@@ -49,18 +49,16 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     router.push("/admin/login")
   }
 
-  const handleRefresh = () => {
+  const handleRefresh = async () => {
     setIsRefreshing(true)
     
-    // Re-sync content from localStorage to ensure we're working with the latest data
     try {
-      // First, force a save of current content to localStorage
-      localStorage.setItem("ngm-content", JSON.stringify(content))
+      // Use the refreshContent method from context to sync with server
+      await refreshContent()
       
-      // Clear localStorage cache for one second to force a complete refresh
+      // Show refreshing state for a moment to provide feedback
       setTimeout(() => {
-        // Force reload the page to completely refresh content state
-        window.location.reload()
+        setIsRefreshing(false)
       }, 1000)
     } catch (error) {
       console.error("Error during refresh:", error)

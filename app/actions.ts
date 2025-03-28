@@ -2,6 +2,8 @@
 import { contactFormSchema, quoteFormSchema } from "@/lib/validations"
 import { Resend } from "resend"
 import { sendDiscordNotification, sendEmailNotification } from "@/lib/notifications"
+import fs from 'fs'
+import path from 'path'
 
 // Initialize Resend with better error handling
 let resend: Resend
@@ -11,6 +13,61 @@ try {
 } catch (error) {
   console.error("Failed to initialize Resend:", error)
   resend = {} as Resend // Fallback empty object to prevent runtime errors
+}
+
+// Path to store the content data file
+const CONTENT_FILE_PATH = path.join(process.cwd(), 'data', 'content.json')
+
+// Ensure the data directory exists
+try {
+  const dataDir = path.join(process.cwd(), 'data')
+  if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir, { recursive: true })
+    console.log("Created data directory")
+  }
+} catch (error) {
+  console.error("Error creating data directory:", error)
+}
+
+// Save content to server file
+export async function saveContentToServer(content: any) {
+  try {
+    // Make sure the directory exists
+    const dataDir = path.join(process.cwd(), 'data')
+    if (!fs.existsSync(dataDir)) {
+      fs.mkdirSync(dataDir, { recursive: true })
+    }
+    
+    // Write content to file
+    fs.writeFileSync(CONTENT_FILE_PATH, JSON.stringify(content, null, 2))
+    console.log("Content saved to server file")
+    
+    return { success: true, message: "Content saved successfully" }
+  } catch (error) {
+    console.error("Error saving content to server file:", error)
+    return { success: false, message: "Error saving content" }
+  }
+}
+
+// Load content from server file
+export async function loadContentFromServer() {
+  try {
+    // Check if file exists
+    if (!fs.existsSync(CONTENT_FILE_PATH)) {
+      console.log("Content file does not exist yet")
+      return { success: false, message: "Content file does not exist" }
+    }
+    
+    // Read content from file
+    const contentData = fs.readFileSync(CONTENT_FILE_PATH, 'utf8')
+    const content = JSON.parse(contentData)
+    console.log("Content loaded from server file")
+    
+    return { success: true, content }
+  } catch (error) {
+    console.error("Error loading content from server file:", error)
+    return { success: false, message: "Error loading content" }
+  }
 }
 
 export async function submitContactForm(prevState: any, formData: FormData) {
