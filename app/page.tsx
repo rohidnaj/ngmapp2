@@ -14,14 +14,26 @@ import MobileMenu from "@/components/mobile-menu"
 import { useContent } from "@/lib/content-context"
 
 export default function Home() {
-  const { content } = useContent()
+  const { content, refreshContent } = useContent()
   const [currentPage, setCurrentPage] = useState("home")
   const [isMounted, setIsMounted] = useState(false)
+  const [lastContentUpdate, setLastContentUpdate] = useState<number>(Date.now())
 
   // Set isMounted to true after component mounts to avoid hydration issues
   useEffect(() => {
     setIsMounted(true)
   }, [])
+
+  // Use effect to handle content updates 
+  useEffect(() => {
+    // Set up an interval to check for content updates every 2 seconds
+    const interval = setInterval(() => {
+      refreshContent()
+      setLastContentUpdate(Date.now())
+    }, 2000)
+    
+    return () => clearInterval(interval)
+  }, [refreshContent])
 
   const navItems = ["Home", "About", "Services", "Gallery", "Reviews", "Blog", "Contact"]
 

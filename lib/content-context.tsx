@@ -91,6 +91,7 @@ type ContentContextType = {
   removeGalleryImage: (index: number) => void
   removeReview: (index: number) => void
   removeBlogPost: (index: number) => void
+  refreshContent: () => void
 }
 
 // Create the context
@@ -112,6 +113,7 @@ export const ContentContext = createContext<ContentContextType>({
   removeGalleryImage: () => {},
   removeReview: () => {},
   removeBlogPost: () => {},
+  refreshContent: () => {},
 })
 
 // Initial content state
@@ -269,8 +271,9 @@ const initialContent: ContentState = {
 export function ContentProvider({ children }: { children: React.ReactNode }) {
   const [content, setContent] = useState<ContentState>(initialContent)
   const [loading, setLoading] = useState(true)
+  const [lastRefresh, setLastRefresh] = useState<number>(Date.now())
 
-  // Load content from localStorage on mount
+  // Load content from localStorage on mount or when refresh is triggered
   useEffect(() => {
     try {
       const savedContent = localStorage.getItem("ngm-content")
@@ -278,23 +281,28 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
         const parsedContent = JSON.parse(savedContent)
         console.log("Loaded saved content:", parsedContent)
         setContent(parsedContent)
+      } else {
+        // Save initial content to localStorage if no saved content exists
+        localStorage.setItem("ngm-content", JSON.stringify(initialContent))
       }
     } catch (error) {
       console.error("Error loading saved content:", error)
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [lastRefresh])
 
   // Save content to localStorage whenever it changes
   useEffect(() => {
-    try {
-      localStorage.setItem("ngm-content", JSON.stringify(content))
-      console.log("Saved content to localStorage")
-    } catch (error) {
-      console.error("Error saving content:", error)
+    if (!loading) { // Only save after initial load to prevent overwriting with default values
+      try {
+        localStorage.setItem("ngm-content", JSON.stringify(content))
+        console.log("Saved content to localStorage")
+      } catch (error) {
+        console.error("Error saving content:", error)
+      }
     }
-  }, [content])
+  }, [content, loading])
 
   // Update entire content or sections
   const updateContent = (newContent: Partial<ContentState>) => {
@@ -501,6 +509,16 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
+  // Add a refresh content function that reloads from localStorage
+  const refreshContent = () => {
+    try {
+      console.log("Refreshing content from localStorage")
+      setLastRefresh(Date.now())
+    } catch (error) {
+      console.error("Error refreshing content:", error)
+    }
+  }
+
   const value = {
     content,
     updateContent,
@@ -519,6 +537,7 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
     removeGalleryImage,
     removeReview,
     removeBlogPost,
+    refreshContent
   }
 
   if (loading) {
