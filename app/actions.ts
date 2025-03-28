@@ -2,8 +2,9 @@
 import { contactFormSchema, quoteFormSchema } from "@/lib/validations"
 import { Resend } from "resend"
 import { sendDiscordNotification, sendEmailNotification } from "@/lib/notifications"
-import fs from 'fs'
-import path from 'path'
+import dbConnect from "@/lib/mongodb"
+import ContentModel from "@/lib/models/content"
+import { ContentState } from "@/lib/content-context"
 
 // Initialize Resend with better error handling
 let resend: Resend
@@ -15,57 +16,57 @@ try {
   resend = {} as Resend // Fallback empty object to prevent runtime errors
 }
 
-// Path to store the content data file
-const CONTENT_FILE_PATH = path.join(process.cwd(), 'data', 'content.json')
-
-// Ensure the data directory exists
-try {
-  const dataDir = path.join(process.cwd(), 'data')
-  if (!fs.existsSync(dataDir)) {
-    fs.mkdirSync(dataDir, { recursive: true })
-    console.log("Created data directory")
-  }
-} catch (error) {
-  console.error("Error creating data directory:", error)
-}
-
-// Save content to server file
-export async function saveContentToServer(content: any) {
+// Save content to MongoDB
+export async function saveContentToServer(content: ContentState) {
   try {
-    // Make sure the directory exists
-    const dataDir = path.join(process.cwd(), 'data')
-    if (!fs.existsSync(dataDir)) {
-      fs.mkdirSync(dataDir, { recursive: true })
-    }
+    // Connect to the database
+    await dbConnect()
     
-    // Write content to file
-    fs.writeFileSync(CONTENT_FILE_PATH, JSON.stringify(content, null, 2))
-    console.log("Content saved to server file")
+    // Find any existing content document
+    const existingContent = await ContentModel.findOne()
+    
+    if (existingContent) {
+      // Update existing document
+      await ContentModel.findByIdAndUpdate(existingContent._id, content)
+      console.log("Content updated in MongoDB")
+    } else {
+      // Create new document
+      await ContentModel.create(content)
+      console.log("Content created in MongoDB")
+    }
     
     return { success: true, message: "Content saved successfully" }
   } catch (error) {
-    console.error("Error saving content to server file:", error)
+    console.error("Error saving content to MongoDB:", error)
     return { success: false, message: "Error saving content" }
   }
 }
 
-// Load content from server file
+// Load content from MongoDB
 export async function loadContentFromServer() {
   try {
-    // Check if file exists
-    if (!fs.existsSync(CONTENT_FILE_PATH)) {
-      console.log("Content file does not exist yet")
-      return { success: false, message: "Content file does not exist" }
+    // Connect to the database
+    await dbConnect()
+    
+    // Find content document
+    const contentDoc = await ContentModel.findOne()
+    
+    if (!contentDoc) {
+      console.log("No content found in MongoDB")
+      return { success: false, message: "No content found" }
     }
     
-    // Read content from file
-    const contentData = fs.readFileSync(CONTENT_FILE_PATH, 'utf8')
-    const content = JSON.parse(contentData)
-    console.log("Content loaded from server file")
+    // Convert to plain object and remove MongoDB specific fields
+    const content = contentDoc.toObject()
+    delete content._id
+    delete content.__v
+    delete content.createdAt
+    delete content.updatedAt
     
+    console.log("Content loaded from MongoDB")
     return { success: true, content }
   } catch (error) {
-    console.error("Error loading content from server file:", error)
+    console.error("Error loading content from MongoDB:", error)
     return { success: false, message: "Error loading content" }
   }
 }
