@@ -24,6 +24,8 @@ export type GalleryImage = {
   url: string
   title: string
   description: string
+  type?: 'upload' | 'url' // 'upload' for uploaded files, 'url' for external URLs
+  fileId?: string // For uploaded files
 }
 
 export type Review = {
