@@ -543,19 +543,41 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
   // Refresh content from server
   const refreshContent = async () => {
     try {
-      console.log("Refreshing content from server")
+      console.log("🔄 FORCE REFRESH: Refreshing content from server...")
+
+      // Clear any cached connection to ensure fresh data
+      if (typeof global !== 'undefined' && global.mongoose) {
+        console.log("Clearing MongoDB connection cache")
+        global.mongoose.conn = null
+        global.mongoose.promise = null
+      }
+
       const serverResult = await loadContentFromServer()
+
       if (serverResult.success && serverResult.content) {
+        console.log("✅ REFRESH SUCCESS: Loaded content from server", {
+          reviews: serverResult.content.reviews?.length || 0,
+          services: serverResult.content.services?.length || 0,
+          gallery: serverResult.content.galleryImages?.length || 0
+        })
+
         isUpdatingFromServer.current = true
         setContent(serverResult.content)
         localStorage.setItem("ngm-content", JSON.stringify(serverResult.content))
         setLastSyncTime(Date.now())
+
         setTimeout(() => {
           isUpdatingFromServer.current = false
         }, 100)
+
+        return { success: true, data: serverResult.content }
+      } else {
+        console.error("❌ REFRESH FAILED: Server returned no content or error", serverResult)
+        return { success: false, error: serverResult.message || "No content returned" }
       }
     } catch (error) {
-      console.error("Error refreshing content:", error)
+      console.error("❌ REFRESH ERROR: Failed to refresh content from server:", error)
+      return { success: false, error: error instanceof Error ? error.message : "Unknown error" }
     }
   }
 

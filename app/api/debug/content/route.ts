@@ -9,7 +9,20 @@ import { loadContentFromServer } from "@/app/actions"
 
 export async function GET() {
   try {
-    console.log("🔍 Debug: Checking database content")
+    console.log("🔍 Debug: Checking database content and connection")
+
+    // Test MongoDB connection first
+    const mongoose = (await import('mongoose')).default
+    const connectionState = mongoose.connection.readyState
+
+    const connectionStatus = {
+      0: 'disconnected',
+      1: 'connected',
+      2: 'connecting',
+      3: 'disconnecting'
+    }[connectionState] || 'unknown'
+
+    console.log(`Database connection state: ${connectionStatus}`)
 
     const result = await loadContentFromServer()
 
@@ -19,6 +32,12 @@ export async function GET() {
         success: true,
         timestamp: new Date().toISOString(),
         domain: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000').hostname,
+        database: {
+          connectionStatus,
+          uri: process.env.MONGODB_URI ? 'configured' : 'missing',
+          readyState: connectionState,
+          environment: process.env.NODE_ENV || 'unknown'
+        },
         content: {
           reviews: {
             count: content.reviews?.length || 0,

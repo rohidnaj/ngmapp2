@@ -54,42 +54,82 @@ export default function Home() {
 
   const handleRefresh = async () => {
     setIsRefreshing(true)
+    const startTime = Date.now()
+
     try {
-      console.log("🔄 Force refreshing content from server...")
-      await refreshContent()
-      console.log("✅ Content refreshed successfully from server")
+      console.log("🔄 FORCE REFRESH: Starting content refresh from server...")
 
-      // Broadcast global sync event to all connected clients across all domains
-      try {
-        const response = await fetch('/api/realtime/broadcast', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            type: 'global-sync',
-            data: {
-              action: 'force-refresh',
-              timestamp: Date.now(),
-              domain: window.location.hostname,
-              userAgent: navigator.userAgent.substring(0, 50)
-            },
-          }),
-        })
+      // Get content counts before refresh
+      const beforeCounts = {
+        reviews: content.reviews?.length || 0,
+        services: content.services?.length || 0,
+        gallery: content.galleryImages?.length || 0
+      }
 
-        if (response.ok) {
-          const result = await response.json()
-          console.log(`📡 Global sync broadcast sent to ${result.clientCount} clients`)
-        } else {
-          console.warn("⚠️ Global sync broadcast failed with status:", response.status)
+      const result = await refreshContent()
+
+      const refreshTime = Date.now() - startTime
+
+      if (result?.success) {
+        console.log(`✅ REFRESH SUCCESS: Completed in ${refreshTime}ms`)
+
+        // Get content counts after refresh
+        const afterCounts = {
+          reviews: result.data.reviews?.length || 0,
+          services: result.data.services?.length || 0,
+          gallery: result.data.galleryImages?.length || 0
         }
-      } catch (broadcastError) {
-        console.warn("⚠️ Global sync broadcast failed:", broadcastError)
+
+        // Check if content actually changed
+        const hasChanges = (
+          beforeCounts.reviews !== afterCounts.reviews ||
+          beforeCounts.services !== afterCounts.services ||
+          beforeCounts.gallery !== afterCounts.gallery
+        )
+
+        if (hasChanges) {
+          alert(`✅ Content refreshed successfully!\n\nBefore: ${beforeCounts.reviews} reviews, ${beforeCounts.services} services, ${beforeCounts.gallery} gallery items\nAfter: ${afterCounts.reviews} reviews, ${afterCounts.services} services, ${afterCounts.gallery} gallery items\n\nTime: ${refreshTime}ms`)
+        } else {
+          alert(`ℹ️ Content checked - no changes detected.\n\nCurrent: ${afterCounts.reviews} reviews, ${afterCounts.services} services, ${afterCounts.gallery} gallery items\n\nTime: ${refreshTime}ms`)
+        }
+
+        // Broadcast global sync event to all connected clients across all domains
+        try {
+          const response = await fetch('/api/realtime/broadcast', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              type: 'global-sync',
+              data: {
+                action: 'force-refresh',
+                timestamp: Date.now(),
+                domain: typeof window !== 'undefined' ? window.location.hostname : 'unknown',
+                refreshTime,
+                hasChanges,
+                contentCounts: afterCounts
+              },
+            }),
+          })
+
+          if (response.ok) {
+            const broadcastResult = await response.json()
+            console.log(`📡 Global sync broadcast sent to ${broadcastResult.clientCount} clients`)
+          } else {
+            console.warn("⚠️ Global sync broadcast failed with status:", response.status)
+          }
+        } catch (broadcastError) {
+          console.warn("⚠️ Global sync broadcast failed:", broadcastError)
+        }
+
+      } else {
+        console.error("❌ REFRESH FAILED:", result?.error)
+        alert(`❌ Failed to refresh content: ${result?.error || 'Unknown error'}\n\nPlease check your internet connection and try again.`)
       }
 
     } catch (error) {
-      console.error("❌ Failed to refresh content:", error)
-      // Show user-friendly error with more details
       const errorMessage = error instanceof Error ? error.message : 'Unknown error'
-      alert(`Failed to refresh content: ${errorMessage}. Please check your connection and try again.`)
+      console.error("❌ REFRESH EXCEPTION:", error)
+      alert(`❌ Refresh failed with error: ${errorMessage}\n\nPlease check the browser console for more details.`)
     } finally {
       setTimeout(() => setIsRefreshing(false), 2000)
     }
@@ -530,17 +570,30 @@ export default function Home() {
               <Button
                 onClick={async () => {
                   try {
+                    console.log('🔍 Checking database content...')
                     const response = await fetch('/api/debug/content')
                     const data = await response.json()
                     console.log('Database content:', data)
-                    alert(`Database check: ${data.content.reviews.count} reviews, ${data.content.galleryImages.count} gallery items\nDomain: ${data.domain}\nTotal items: ${data.syncInfo.totalItems}`)
+
+                    const message = `Database Status: ${data.success ? '✅ Connected' : '❌ Failed'}\n\n` +
+                      `Domain: ${data.domain}\n` +
+                      `Timestamp: ${new Date(data.timestamp).toLocaleString()}\n\n` +
+                      `Content Counts:\n` +
+                      `• Reviews: ${data.content.reviews.count}\n` +
+                      `• Services: ${data.content.services.count}\n` +
+                      `• Gallery: ${data.content.galleryImages.count}\n` +
+                      `• Testimonials: ${data.content.testimonials.count}\n` +
+                      `• Blog Posts: ${data.content.blogPosts.count}\n\n` +
+                      `Total Items: ${data.syncInfo.totalItems}`
+
+                    alert(message)
                   } catch (error) {
                     console.error('Debug fetch failed:', error)
-                    alert('Failed to check database')
+                    alert(`❌ Database check failed: ${error instanceof Error ? error.message : 'Unknown error'}\n\nCheck browser console for details.`)
                   }
                 }}
                 size="sm"
-                className="w-full text-xs"
+                className="w-full text-xs mb-2"
               >
                 Check Database
               </Button>
@@ -552,28 +605,125 @@ export default function Home() {
 
                   for (const domain of domains) {
                     try {
-                      const response = await fetch(`${domain}/api/debug/content`, {
-                        mode: 'cors',
-                        headers: { 'Accept': 'application/json' }
+                      // Try to fetch from the same domain first (for CORS)
+                      const testDomain = domain === window.location.origin ? '' : domain
+                      const apiUrl = testDomain ? `${domain}/api/debug/content` : '/api/debug/content'
+
+                      const response = await fetch(apiUrl, {
+                        headers: { 'Accept': 'application/json' },
+                        cache: 'no-cache'
                       })
+
                       if (response.ok) {
                         const data = await response.json()
-                        results.push(`${domain}: ${data.syncInfo.totalItems} items`)
+                        results.push(`${domain}:\n  ✅ ${data.syncInfo.totalItems} items\n  DB: ${data.database.connectionStatus}`)
                       } else {
-                        results.push(`${domain}: Failed (${response.status})`)
+                        results.push(`${domain}: ❌ HTTP ${response.status}`)
                       }
                     } catch (error) {
-                      results.push(`${domain}: Error`)
+                      results.push(`${domain}: ❌ ${error instanceof Error ? error.message : 'Error'}`)
                     }
                   }
 
-                  alert(`Cross-domain sync check:\n${results.join('\n')}`)
+                  alert(`Cross-domain sync check:\n\n${results.join('\n\n')}`)
                 }}
                 size="sm"
                 variant="outline"
-                className="w-full text-xs border-white/20 text-white hover:bg-white/10"
+                className="w-full text-xs border-white/20 text-white hover:bg-white/10 mb-2"
               >
                 Check Both Domains
+              </Button>
+
+              <Button
+                onClick={() => {
+                  // Force a complete page reload to bypass all caches
+                  console.log('🔄 FORCE PAGE RELOAD')
+                  window.location.reload()
+                }}
+                size="sm"
+                variant="outline"
+                className="w-full text-xs border-white/20 text-white hover:bg-white/10 mb-2"
+              >
+                Force Page Reload
+              </Button>
+
+              <div className="text-xs text-gray-300 mb-2">Database Tests:</div>
+
+              <Button
+                onClick={async () => {
+                  try {
+                    console.log('🔗 Testing database connection...')
+                    const response = await fetch('/api/debug/test')
+                    const data = await response.json()
+
+                    if (data.success) {
+                      alert(`✅ Database Connection OK!\n\nStatus: ${data.database.connectionStatus}\nEnvironment: ${data.database.environment}\nURI: ${data.database.uri}`)
+                    } else {
+                      alert(`❌ Database Connection Failed: ${data.error}`)
+                    }
+                  } catch (error) {
+                    alert(`❌ Test failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
+                  }
+                }}
+                size="sm"
+                variant="outline"
+                className="w-full text-xs border-white/20 text-white hover:bg-white/10 mb-1"
+              >
+                Test DB Connection
+              </Button>
+
+              <Button
+                onClick={async () => {
+                  if (!confirm('This will create sample data in your database. Continue?')) return
+
+                  try {
+                    console.log('📝 Creating sample data...')
+                    const response = await fetch('/api/debug/test', { method: 'POST' })
+                    const data = await response.json()
+
+                    if (data.success) {
+                      alert(`✅ Sample data created!\n\n${data.itemCounts.reviews} reviews\n${data.itemCounts.services} services\n${data.itemCounts.galleryImages} gallery images\n\nRefresh the page to see changes.`)
+                      // Auto refresh after creating sample data
+                      setTimeout(() => window.location.reload(), 1000)
+                    } else {
+                      alert(`❌ Failed to create sample data: ${data.message}`)
+                    }
+                  } catch (error) {
+                    alert(`❌ Failed to create sample data: ${error instanceof Error ? error.message : 'Unknown error'}`)
+                  }
+                }}
+                size="sm"
+                variant="outline"
+                className="w-full text-xs border-white/20 text-white hover:bg-white/10 mb-1"
+              >
+                Create Sample Data
+              </Button>
+
+              <Button
+                onClick={async () => {
+                  if (!confirm('This will DELETE ALL content from the database. Are you sure?')) return
+
+                  try {
+                    console.log('🗑️ Clearing database...')
+                    const response = await fetch('/api/debug/test', { method: 'DELETE' })
+                    const data = await response.json()
+
+                    if (data.success) {
+                      alert(`✅ Database cleared! Deleted ${data.deletedCount} documents.\n\nRefresh the page to see changes.`)
+                      // Auto refresh after clearing data
+                      setTimeout(() => window.location.reload(), 1000)
+                    } else {
+                      alert(`❌ Failed to clear database: ${data.error}`)
+                    }
+                  } catch (error) {
+                    alert(`❌ Failed to clear database: ${error instanceof Error ? error.message : 'Unknown error'}`)
+                  }
+                }}
+                size="sm"
+                variant="destructive"
+                className="w-full text-xs"
+              >
+                Clear Database
               </Button>
             </div>
           </div>
