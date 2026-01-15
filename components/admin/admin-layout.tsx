@@ -19,7 +19,7 @@ import {
 } from "lucide-react"
 import { useAuth } from "@/lib/auth"
 import { useContent } from "@/lib/content-context"
-import { SyncStatusIndicator } from "@/components/admin/sync-status-indicator"
+import { EnhancedSyncStatus } from "@/components/admin/enhanced-sync-status"
 
 interface AdminLayoutProps {
   children: React.ReactNode
@@ -85,7 +85,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           <div className="p-6">
             <h1 className="text-xl font-bold text-green-800">Admin Panel</h1>
             <div className="mt-3">
-              <SyncStatusIndicator />
+              <EnhancedSyncStatus />
             </div>
           </div>
           <nav className="flex-1 px-4 pb-4">
@@ -160,7 +160,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             <div>
               <h1 className="text-xl font-bold text-green-800">Admin Panel</h1>
               <div className="mt-2">
-                <SyncStatusIndicator />
+                <EnhancedSyncStatus />
               </div>
             </div>
             <button onClick={() => setIsMenuOpen(false)}>

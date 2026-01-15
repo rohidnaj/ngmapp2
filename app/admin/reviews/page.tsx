@@ -4,6 +4,7 @@ import { withAuth } from "@/lib/auth"
 import { useContent, type Review } from "@/lib/content-context"
 import AdminLayout from "@/components/admin/admin-layout"
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
+import { EnhancedSyncStatus } from "@/components/admin/enhanced-sync-status"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
@@ -79,9 +80,12 @@ function ReviewsPage() {
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold">Manage Reviews</h1>
-          <Button onClick={handleAddNew}>
-            <Plus className="mr-2 h-4 w-4" /> Add Review
-          </Button>
+          <div className="flex items-center gap-4">
+            <EnhancedSyncStatus />
+            <Button onClick={handleAddNew}>
+              <Plus className="mr-2 h-4 w-4" /> Add Review
+            </Button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
