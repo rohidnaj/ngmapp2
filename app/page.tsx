@@ -12,13 +12,14 @@ import QuoteForm from "@/components/quote-form"
 import SeoMetadata from "@/components/seo-metadata"
 import MobileMenu from "@/components/mobile-menu"
 import { useContent } from "@/lib/content-context"
-import { RefreshCw } from "lucide-react"
+import { RefreshCw, Bug, X } from "lucide-react"
 
 export default function Home() {
   const { content, refreshContent, syncStatus, lastSyncTime } = useContent()
   const [currentPage, setCurrentPage] = useState("home")
   const [isMounted, setIsMounted] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const [showDebug, setShowDebug] = useState(false)
 
   // Set isMounted to true after component mounts to avoid hydration issues
   useEffect(() => {
@@ -37,17 +38,60 @@ export default function Home() {
     })
   }, [content, lastSyncTime, syncStatus])
 
+  const formatLastSync = (timestamp: number | null) => {
+    if (!timestamp) return "Never"
+    const now = Date.now()
+    const diff = now - timestamp
+    const minutes = Math.floor(diff / 60000)
+    const hours = Math.floor(diff / 3600000)
+
+    if (diff < 60000) return "Just now"
+    if (minutes < 60) return `${minutes}m ago`
+    return `${hours}h ago`
+  }
+
   const navItems = ["Home", "About", "Services", "Gallery", "Reviews", "Blog", "Contact"]
 
   const handleRefresh = async () => {
     setIsRefreshing(true)
     try {
+      console.log("🔄 Force refreshing content from server...")
       await refreshContent()
-      console.log("Content refreshed from server")
+      console.log("✅ Content refreshed successfully from server")
+
+      // Broadcast global sync event to all connected clients across all domains
+      try {
+        const response = await fetch('/api/realtime/broadcast', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            type: 'global-sync',
+            data: {
+              action: 'force-refresh',
+              timestamp: Date.now(),
+              domain: window.location.hostname,
+              userAgent: navigator.userAgent.substring(0, 50)
+            },
+          }),
+        })
+
+        if (response.ok) {
+          const result = await response.json()
+          console.log(`📡 Global sync broadcast sent to ${result.clientCount} clients`)
+        } else {
+          console.warn("⚠️ Global sync broadcast failed with status:", response.status)
+        }
+      } catch (broadcastError) {
+        console.warn("⚠️ Global sync broadcast failed:", broadcastError)
+      }
+
     } catch (error) {
-      console.error("Failed to refresh content:", error)
+      console.error("❌ Failed to refresh content:", error)
+      // Show user-friendly error with more details
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+      alert(`Failed to refresh content: ${errorMessage}. Please check your connection and try again.`)
     } finally {
-      setTimeout(() => setIsRefreshing(false), 1000)
+      setTimeout(() => setIsRefreshing(false), 2000)
     }
   }
 
@@ -80,16 +124,46 @@ export default function Home() {
                   {item}
                 </a>
               ))}
-              <Button
-                onClick={handleRefresh}
-                disabled={isRefreshing}
-                variant="outline"
-                size="sm"
-                className="p-2"
-                title="Refresh content from server"
-              >
-                <RefreshCw className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`} />
-              </Button>
+
+              {/* Sync Status and Controls */}
+              <div className="flex items-center space-x-2 px-3 py-1 bg-gray-50 rounded-md border">
+                <div className={`w-2 h-2 rounded-full ${
+                  syncStatus === 'connected' ? 'bg-green-500' :
+                  syncStatus === 'connecting' ? 'bg-yellow-500 animate-pulse' :
+                  syncStatus === 'error' ? 'bg-red-500' :
+                  'bg-gray-400'
+                }`} title={`Real-time sync: ${syncStatus}${lastSyncTime ? ` (${formatLastSync(lastSyncTime)})` : ''}`} />
+                <span className="text-xs text-gray-600 hidden lg:inline">
+                  {syncStatus === 'connected' ? 'Live' :
+                   syncStatus === 'connecting' ? 'Connecting...' :
+                   syncStatus === 'error' ? 'Offline' : 'Disconnected'}
+                </span>
+                {lastSyncTime && (
+                  <span className="text-xs text-gray-500 hidden xl:inline">
+                    {formatLastSync(lastSyncTime)}
+                  </span>
+                )}
+                <Button
+                  onClick={handleRefresh}
+                  disabled={isRefreshing}
+                  variant="ghost"
+                  size="sm"
+                  className="p-1 h-6 w-6"
+                  title="Force refresh content from server and sync across all devices and domains"
+                >
+                  <RefreshCw className={`h-4 w-4 ${isRefreshing ? "animate-spin text-blue-500" : "text-gray-600"}`} />
+                </Button>
+                <Button
+                  onClick={() => setShowDebug(!showDebug)}
+                  variant="ghost"
+                  size="sm"
+                  className="p-1 h-6 w-6"
+                  title="Toggle debug information"
+                >
+                  <Bug className="h-4 w-4 text-gray-600" />
+                </Button>
+              </div>
+
               <Button
                 onClick={() => setCurrentPage("quote")}
                 className="bg-green-700 text-white px-6 py-2 rounded-md cursor-pointer whitespace-nowrap"
@@ -429,6 +503,82 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      {/* Debug Panel */}
+      {showDebug && (
+        <div className="fixed bottom-4 right-4 bg-black/90 text-white p-4 rounded-lg max-w-sm z-50 border">
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="text-sm font-semibold">🔍 Sync Debug</h3>
+            <Button
+              onClick={() => setShowDebug(false)}
+              variant="ghost"
+              size="sm"
+              className="p-1 h-6 w-6 text-white hover:bg-white/20"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+          <div className="text-xs space-y-1">
+            <div>Domain: {typeof window !== 'undefined' ? window.location.hostname : 'N/A'}</div>
+            <div>Status: {syncStatus}</div>
+            <div>Last Sync: {formatLastSync(lastSyncTime)}</div>
+            <div>Client ID: {clientId ? clientId.slice(0, 8) + '...' : 'None'}</div>
+            <div>Reviews: {content.reviews?.length || 0}</div>
+            <div>Services: {content.services?.length || 0}</div>
+            <div>Gallery: {content.galleryImages?.length || 0}</div>
+            <div className="pt-2 border-t space-y-2">
+              <Button
+                onClick={async () => {
+                  try {
+                    const response = await fetch('/api/debug/content')
+                    const data = await response.json()
+                    console.log('Database content:', data)
+                    alert(`Database check: ${data.content.reviews.count} reviews, ${data.content.galleryImages.count} gallery items\nDomain: ${data.domain}\nTotal items: ${data.syncInfo.totalItems}`)
+                  } catch (error) {
+                    console.error('Debug fetch failed:', error)
+                    alert('Failed to check database')
+                  }
+                }}
+                size="sm"
+                className="w-full text-xs"
+              >
+                Check Database
+              </Button>
+
+              <Button
+                onClick={async () => {
+                  const domains = ['https://ngmlandscapeca.vercel.app', 'https://www.ngmlandscape.ca']
+                  const results = []
+
+                  for (const domain of domains) {
+                    try {
+                      const response = await fetch(`${domain}/api/debug/content`, {
+                        mode: 'cors',
+                        headers: { 'Accept': 'application/json' }
+                      })
+                      if (response.ok) {
+                        const data = await response.json()
+                        results.push(`${domain}: ${data.syncInfo.totalItems} items`)
+                      } else {
+                        results.push(`${domain}: Failed (${response.status})`)
+                      }
+                    } catch (error) {
+                      results.push(`${domain}: Error`)
+                    }
+                  }
+
+                  alert(`Cross-domain sync check:\n${results.join('\n')}`)
+                }}
+                size="sm"
+                variant="outline"
+                className="w-full text-xs border-white/20 text-white hover:bg-white/10"
+              >
+                Check Both Domains
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

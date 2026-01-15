@@ -18,6 +18,7 @@ export async function GET() {
       const summary = {
         success: true,
         timestamp: new Date().toISOString(),
+        domain: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000').hostname,
         content: {
           reviews: {
             count: content.reviews?.length || 0,
@@ -36,6 +37,13 @@ export async function GET() {
           blogPosts: {
             count: content.blogPosts?.length || 0,
           },
+        },
+        syncInfo: {
+          totalItems: (content.reviews?.length || 0) +
+                     (content.services?.length || 0) +
+                     (content.galleryImages?.length || 0) +
+                     (content.testimonials?.length || 0) +
+                     (content.blogPosts?.length || 0),
         },
         fullContent: content, // Include full content for detailed debugging
       }

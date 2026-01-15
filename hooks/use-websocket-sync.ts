@@ -262,6 +262,15 @@ export function useWebSocketSync(options: WebSocketSyncOptions = {}) {
           handleSyncEvent(message.event)
           break
 
+        case 'global-sync':
+          console.log("🌐 Global sync event received:", message)
+          // Trigger a content refresh for global sync events
+          if (onContentUpdate) {
+            // Force a refresh by calling the content update callback
+            onContentUpdate({}, { type: 'global-sync', timestamp: message.timestamp })
+          }
+          break
+
         case 'operation-result':
           handleOperationResult(message.result)
           break

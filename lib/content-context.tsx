@@ -294,7 +294,14 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
     connect,
     disconnect,
   } = useWebSocketSync({
-    onContentUpdate: (data) => {
+    onContentUpdate: (data, event) => {
+      if (event?.type === 'global-sync') {
+        // Global sync event - force refresh from server
+        console.log("[Real-time] Global sync triggered, refreshing from server...")
+        refreshContent()
+        return
+      }
+
       console.log("[Real-time] Content update received:", data)
       isUpdatingFromServer.current = true
       setContent(data)
