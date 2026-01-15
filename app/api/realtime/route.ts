@@ -37,7 +37,9 @@ export async function GET(request: Request) {
   return new Response(stream, {
     headers: {
       "Content-Type": "text/event-stream",
-      "Cache-Control": "no-cache, no-transform",
+      "Cache-Control": "no-cache, no-store, must-revalidate",
+      "Pragma": "no-cache",
+      "Expires": "0",
       Connection: "keep-alive",
       "X-Client-Id": clientId,
     },

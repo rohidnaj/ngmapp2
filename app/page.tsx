@@ -12,18 +12,44 @@ import QuoteForm from "@/components/quote-form"
 import SeoMetadata from "@/components/seo-metadata"
 import MobileMenu from "@/components/mobile-menu"
 import { useContent } from "@/lib/content-context"
+import { RefreshCw } from "lucide-react"
 
 export default function Home() {
-  const { content } = useContent()
+  const { content, refreshContent, syncStatus, lastSyncTime } = useContent()
   const [currentPage, setCurrentPage] = useState("home")
   const [isMounted, setIsMounted] = useState(false)
+  const [isRefreshing, setIsRefreshing] = useState(false)
 
   // Set isMounted to true after component mounts to avoid hydration issues
   useEffect(() => {
     setIsMounted(true)
-  }, [])
+    console.log("🏠 Home page mounted, sync status:", syncStatus)
+  }, [syncStatus])
+
+  // Log content updates for debugging
+  useEffect(() => {
+    console.log("📄 Content updated:", {
+      reviewsCount: content.reviews?.length || 0,
+      servicesCount: content.services?.length || 0,
+      galleryCount: content.galleryImages?.length || 0,
+      lastSyncTime,
+      syncStatus
+    })
+  }, [content, lastSyncTime, syncStatus])
 
   const navItems = ["Home", "About", "Services", "Gallery", "Reviews", "Blog", "Contact"]
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true)
+    try {
+      await refreshContent()
+      console.log("Content refreshed from server")
+    } catch (error) {
+      console.error("Failed to refresh content:", error)
+    } finally {
+      setTimeout(() => setIsRefreshing(false), 1000)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -55,6 +81,16 @@ export default function Home() {
                 </a>
               ))}
               <Button
+                onClick={handleRefresh}
+                disabled={isRefreshing}
+                variant="outline"
+                size="sm"
+                className="p-2"
+                title="Refresh content from server"
+              >
+                <RefreshCw className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`} />
+              </Button>
+              <Button
                 onClick={() => setCurrentPage("quote")}
                 className="bg-green-700 text-white px-6 py-2 rounded-md cursor-pointer whitespace-nowrap"
               >
@@ -75,13 +111,13 @@ export default function Home() {
             {/* Hero Section */}
             <div className="relative h-[400px] md:h-[600px]">
               <div className="absolute inset-0">
-                <Image
-                  src={content.home.heroImage || "/placeholder.svg"}
-                  alt="Garden landscape"
-                  fill
-                  className="object-cover object-top"
-                  priority
-                />
+                  <Image
+                    src={content.home.heroImage || "/placeholder.svg"}
+                    alt="Garden landscape"
+                    fill
+                    className="object-cover object-top"
+                    priority
+                  />
                 <div className="absolute inset-0 bg-black/40"></div>
               </div>
               <div className="relative max-w-7xl mx-auto px-4 h-full flex items-center">

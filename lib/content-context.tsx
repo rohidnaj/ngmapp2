@@ -327,38 +327,61 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
     [syncOperation],
   )
 
-  // Load content from server on mount
+  // Load content from server on mount - prioritize fresh server data
   useEffect(() => {
     async function loadContentData() {
       try {
+        console.log("Loading content from server...")
         const serverResult = await loadContentFromServer()
 
         if (serverResult.success && serverResult.content) {
-          console.log("Loaded content from server")
+          console.log("✅ Loaded fresh content from server")
           setContent(serverResult.content)
           localStorage.setItem("ngm-content", JSON.stringify(serverResult.content))
         } else {
+          console.log("⚠️ No content found on server, checking localStorage...")
+          // Try localStorage as fallback
           const savedContent = localStorage.getItem("ngm-content")
           if (savedContent) {
             const parsedContent = JSON.parse(savedContent)
-            console.log("Loaded saved content from localStorage")
+            console.log("Loaded content from localStorage")
             setContent(parsedContent)
-            await saveContentToServer(parsedContent)
+            // Try to save to server for future loads
+            try {
+              await saveContentToServer(parsedContent)
+              console.log("Saved localStorage content to server")
+            } catch (saveError) {
+              console.warn("Failed to save localStorage content to server:", saveError)
+            }
           } else {
+            console.log("No content found anywhere, using initial content")
+            setContent(initialContent)
             localStorage.setItem("ngm-content", JSON.stringify(initialContent))
-            await saveContentToServer(initialContent)
+            // Try to save initial content to server
+            try {
+              await saveContentToServer(initialContent)
+              console.log("Saved initial content to server")
+            } catch (saveError) {
+              console.warn("Failed to save initial content to server:", saveError)
+            }
           }
         }
       } catch (error) {
-        console.error("Error loading content:", error)
+        console.error("❌ Error loading content from server:", error)
 
+        // Fallback to localStorage if server fails
         try {
           const savedContent = localStorage.getItem("ngm-content")
           if (savedContent) {
+            console.log("Fallback: Loaded content from localStorage")
             setContent(JSON.parse(savedContent))
+          } else {
+            console.log("Fallback: Using initial content")
+            setContent(initialContent)
           }
         } catch (localError) {
-          console.error("Error loading from localStorage:", localError)
+          console.error("❌ Fallback failed:", localError)
+          setContent(initialContent)
         }
       } finally {
         setLoading(false)
@@ -367,7 +390,7 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
 
     loadContentData()
 
-    // Connect to WebSocket sync
+    // Connect to WebSocket sync for real-time updates
     connect()
 
     return () => {

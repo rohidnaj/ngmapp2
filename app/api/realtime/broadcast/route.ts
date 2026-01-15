@@ -22,6 +22,12 @@ export async function POST(request: Request) {
       success: true,
       clientCount: eventEmitter.getClientCount(),
       timestamp: event.timestamp,
+    }, {
+      headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+      },
     })
   } catch (error) {
     console.error("[Broadcast] Error:", error)
