@@ -4,6 +4,7 @@ import type React from "react"
 
 import { createContext, useContext, useState, useEffect, useCallback, useRef } from "react"
 import { saveContentToServer, loadContentFromServer } from "@/app/actions"
+import { useWebSocketSync } from "@/hooks/use-websocket-sync"
 
 // Define types for all content sections
 export type Service = {
@@ -280,113 +281,49 @@ const initialContent: ContentState = {
 export function ContentProvider({ children }: { children: React.ReactNode }) {
   const [content, setContent] = useState<ContentState>(initialContent)
   const [loading, setLoading] = useState(true)
-
-  const [syncStatus, setSyncStatus] = useState<SyncStatus>("disconnected")
-  const [lastSyncTime, setLastSyncTime] = useState<number | null>(null)
-  const [clientId, setClientId] = useState<string | null>(null)
-
-  const eventSourceRef = useRef<EventSource | null>(null)
-  const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const isUpdatingFromServer = useRef(false)
+
+  // Use the new WebSocket sync hook
+  const {
+    status: syncStatus,
+    clientId,
+    lastSyncTime,
+    syncOperation,
+    connect,
+    disconnect,
+  } = useWebSocketSync({
+    onContentUpdate: (data) => {
+      console.log("[Real-time] Content update received:", data)
+      isUpdatingFromServer.current = true
+      setContent(data)
+      // Update localStorage
+      localStorage.setItem("ngm-content", JSON.stringify(data))
+      // Reset flag after a short delay
+      setTimeout(() => {
+        isUpdatingFromServer.current = false
+      }, 100)
+    },
+    enabled: true,
+  })
 
   const broadcastUpdate = useCallback(
     async (updatedContent: ContentState) => {
-      if (!clientId) return
+      if (!syncOperation) return
 
       try {
-        await fetch("/api/realtime/broadcast", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            type: "content-update",
-            data: updatedContent,
-            sourceClientId: clientId,
-          }),
+        await syncOperation({
+          type: "update",
+          entityType: "content",
+          entityId: "full-content",
+          data: updatedContent,
+          optimistic: false, // Don't use optimistic updates for content sync
         })
       } catch (error) {
         console.error("Failed to broadcast update:", error)
       }
     },
-    [clientId],
+    [syncOperation],
   )
-
-  const connectToSSE = useCallback(() => {
-    if (typeof window === "undefined") return
-
-    // Close existing connection
-    if (eventSourceRef.current) {
-      eventSourceRef.current.close()
-    }
-
-    setSyncStatus("connecting")
-
-    try {
-      const eventSource = new EventSource("/api/realtime")
-      eventSourceRef.current = eventSource
-
-      eventSource.onmessage = (event) => {
-        try {
-          const data = JSON.parse(event.data)
-
-          switch (data.type) {
-            case "connected":
-              setSyncStatus("connected")
-              setClientId(data.data?.clientId)
-              setLastSyncTime(Date.now())
-              console.log("[Real-time] Connected:", data.data?.clientId)
-              break
-
-            case "content-update":
-              // Update content from another client
-              if (data.data) {
-                isUpdatingFromServer.current = true
-                setContent(data.data)
-                setLastSyncTime(data.timestamp)
-                // Also update localStorage
-                localStorage.setItem("ngm-content", JSON.stringify(data.data))
-                console.log("[Real-time] Content updated from another client")
-                // Reset flag after a short delay
-                setTimeout(() => {
-                  isUpdatingFromServer.current = false
-                }, 100)
-              }
-              break
-
-            case "heartbeat":
-              // Keep connection alive
-              break
-          }
-        } catch (error) {
-          console.error("[Real-time] Error parsing message:", error)
-        }
-      }
-
-      eventSource.onerror = () => {
-        setSyncStatus("error")
-        eventSource.close()
-
-        // Attempt to reconnect after 3 seconds
-        reconnectTimeoutRef.current = setTimeout(() => {
-          connectToSSE()
-        }, 3000)
-      }
-    } catch (error) {
-      console.error("[Real-time] Failed to connect:", error)
-      setSyncStatus("error")
-    }
-  }, [])
-
-  const disconnectSSE = useCallback(() => {
-    if (reconnectTimeoutRef.current) {
-      clearTimeout(reconnectTimeoutRef.current)
-    }
-    if (eventSourceRef.current) {
-      eventSourceRef.current.close()
-      eventSourceRef.current = null
-    }
-    setSyncStatus("disconnected")
-    setClientId(null)
-  }, [])
 
   // Load content from server on mount
   useEffect(() => {
@@ -428,14 +365,15 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
 
     loadContentData()
 
-    connectToSSE()
+    // Connect to WebSocket sync
+    connect()
 
     return () => {
-      disconnectSSE()
+      disconnect()
     }
-  }, [connectToSSE, disconnectSSE])
+  }, [connect, disconnect])
 
-  // Save content to server whenever it changes (but not from SSE updates)
+  // Save content to server whenever it changes (but not from server updates)
   useEffect(() => {
     if (!loading && !isUpdatingFromServer.current) {
       async function saveContentData() {
@@ -445,7 +383,6 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
           const result = await saveContentToServer(content)
           if (result.success) {
             console.log("Saved content to server")
-            setLastSyncTime(Date.now())
             broadcastUpdate(content)
           } else {
             console.error("Failed to save to server:", result.message)

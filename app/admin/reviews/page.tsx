@@ -12,7 +12,6 @@ import { Pencil, Trash, Plus, User, Calendar } from "lucide-react"
 
 function ReviewsPage() {
   const { content, updateReview, addReview, removeReview } = useContent()
-  const [reviews, setReviews] = useState<Review[]>(content.reviews)
   const [dialogOpen, setDialogOpen] = useState(false)
   const [editingIndex, setEditingIndex] = useState<number | null>(null)
   const [currentReview, setCurrentReview] = useState<Review>({
@@ -30,7 +29,7 @@ function ReviewsPage() {
 
   const handleEdit = (index: number) => {
     setEditingIndex(index)
-    setCurrentReview({...reviews[index]})
+    setCurrentReview({...content.reviews[index]})
     setDialogOpen(true)
   }
 
@@ -46,11 +45,9 @@ function ReviewsPage() {
     if (editingIndex !== null) {
       // Update existing review
       updateReview(editingIndex, currentReview)
-      setReviews(prev => prev.map((review, i) => i === editingIndex ? currentReview : review))
     } else {
       // Add new review
       addReview(currentReview)
-      setReviews(prev => [...prev, currentReview])
     }
     setDialogOpen(false)
     setEditingIndex(null)
@@ -59,7 +56,6 @@ function ReviewsPage() {
   const handleDelete = (index: number) => {
     if (confirm("Are you sure you want to delete this review?")) {
       removeReview(index)
-      setReviews(prev => prev.filter((_, i) => i !== index))
     }
   }
 
@@ -89,7 +85,7 @@ function ReviewsPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {reviews.map((review, index) => (
+          {content.reviews.map((review, index) => (
             <Card key={index} className="overflow-hidden">
               <CardHeader>
                 <div className="flex items-center space-x-2">

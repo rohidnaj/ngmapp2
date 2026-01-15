@@ -43,7 +43,7 @@ export function useWebSocketSync(options: WebSocketSyncOptions = {}) {
   const reconnectAttempts = useRef(0)
 
   // =============================================================================
-  // WEBSOCKET CONNECTION MANAGEMENT
+  // WEBSOCKET CONNECTION MANAGEMENT (WITH SSE FALLBACK)
   // =============================================================================
 
   const connect = useCallback(() => {
@@ -57,6 +57,7 @@ export function useWebSocketSync(options: WebSocketSyncOptions = {}) {
     setStatus("connecting")
 
     try {
+      // Try WebSocket first, fallback to SSE
       const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
       const wsUrl = `${protocol}//${window.location.host}/api/realtime/ws`
 
@@ -68,7 +69,17 @@ export function useWebSocketSync(options: WebSocketSyncOptions = {}) {
       const ws = new WebSocket(url.toString())
       wsRef.current = ws
 
+      // Set a timeout to fallback to SSE if WebSocket doesn't connect quickly
+      const fallbackTimeout = setTimeout(() => {
+        if (status === "connecting") {
+          console.log("[WebSocket] Falling back to SSE")
+          ws.close()
+          connectSSE()
+        }
+      }, 2000)
+
       ws.onopen = () => {
+        clearTimeout(fallbackTimeout)
         console.log("[WebSocket] Connected")
         setStatus("connected")
         reconnectAttempts.current = 0
@@ -95,16 +106,57 @@ export function useWebSocketSync(options: WebSocketSyncOptions = {}) {
 
       ws.onerror = (error) => {
         console.error("[WebSocket] Error:", error)
-        setStatus("error")
-        onError?.(new Error("WebSocket connection failed"))
+        // Don't set error status here - let the fallback timeout handle it
       }
 
     } catch (error) {
       console.error("[WebSocket] Failed to connect:", error)
+      // Fallback to SSE immediately if WebSocket fails
+      connectSSE()
+    }
+  }, [enabled, clientId, sessionId, finalConfig.maxReconnectAttempts, onError])
+
+  // SSE Fallback connection
+  const connectSSE = useCallback(() => {
+    console.log("[SSE] Connecting as fallback")
+
+    setStatus("connecting")
+
+    try {
+      const eventSource = new EventSource("/api/realtime")
+      wsRef.current = eventSource as any // Store as WebSocket for compatibility
+
+      eventSource.onopen = () => {
+        console.log("[SSE] Connected")
+        setStatus("connected")
+        reconnectAttempts.current = 0
+        setLastSyncTime(Date.now())
+      }
+
+      eventSource.onmessage = (event) => {
+        handleMessage(event.data)
+      }
+
+      eventSource.onerror = (error) => {
+        console.error("[SSE] Connection error:", error)
+        setStatus("error")
+        eventSource.close()
+
+        // Attempt to reconnect
+        if (reconnectAttempts.current < finalConfig.maxReconnectAttempts) {
+          scheduleReconnect()
+        } else {
+          setStatus("disconnected")
+          onError?.(new Error("SSE connection failed"))
+        }
+      }
+
+    } catch (error) {
+      console.error("[SSE] Failed to connect:", error)
       setStatus("error")
       onError?.(error as Error)
     }
-  }, [enabled, clientId, sessionId, finalConfig.maxReconnectAttempts, onError])
+  }, [enabled, clientId, sessionId, finalConfig.maxReconnectAttempts, onError, connectSSE])
 
   const disconnect = useCallback(() => {
     if (reconnectTimeoutRef.current) {
@@ -113,7 +165,12 @@ export function useWebSocketSync(options: WebSocketSyncOptions = {}) {
     stopHeartbeat()
 
     if (wsRef.current) {
-      wsRef.current.close()
+      if (wsRef.current instanceof WebSocket) {
+        wsRef.current.close()
+      } else {
+        // SSE connection
+        (wsRef.current as any).close()
+      }
       wsRef.current = null
     }
 
@@ -152,11 +209,14 @@ export function useWebSocketSync(options: WebSocketSyncOptions = {}) {
     }
 
     heartbeatIntervalRef.current = setInterval(() => {
-      if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-        sendMessage({ type: 'ping', timestamp: Date.now() })
+      if (wsRef.current) {
+        if (wsRef.current instanceof WebSocket && wsRef.current.readyState === WebSocket.OPEN) {
+          sendMessage({ type: 'ping', timestamp: Date.now() })
+        }
+        // For SSE, heartbeats are handled by the server
       }
     }, finalConfig.heartbeatInterval)
-  }, [finalConfig.heartbeatInterval])
+  }, [finalConfig.heartbeatInterval, sendMessage])
 
   const stopHeartbeat = useCallback(() => {
     if (heartbeatIntervalRef.current) {
@@ -258,16 +318,35 @@ export function useWebSocketSync(options: WebSocketSyncOptions = {}) {
   // =============================================================================
 
   const sendMessage = useCallback((message: any): boolean => {
-    if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) {
-      return false
-    }
+    if (!wsRef.current) return false
 
-    try {
-      wsRef.current.send(JSON.stringify(message))
+    // Check if it's a WebSocket connection
+    if (wsRef.current instanceof WebSocket) {
+      if (wsRef.current.readyState !== WebSocket.OPEN) {
+        return false
+      }
+
+      try {
+        wsRef.current.send(JSON.stringify(message))
+        return true
+      } catch (error) {
+        console.error("[WebSocket] Failed to send message:", error)
+        return false
+      }
+    } else {
+      // SSE connection - we can't send messages back, so use HTTP API instead
+      console.log("[SSE] Sending via HTTP API:", message)
+
+      // For SSE fallback, we'll use the existing broadcast API
+      fetch('/api/realtime/broadcast', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(message),
+      }).catch(error => {
+        console.error("[SSE] Failed to send via HTTP:", error)
+      })
+
       return true
-    } catch (error) {
-      console.error("[WebSocket] Failed to send message:", error)
-      return false
     }
   }, [])
 
