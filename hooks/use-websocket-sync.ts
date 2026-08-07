@@ -1,7 +1,8 @@
 "use client"
 
 import { useEffect, useRef, useState, useCallback } from "react"
-import { SyncEvent, SyncOperation, SyncResult, SyncConfig, defaultSyncConfig } from "@/lib/realtime-sync/advanced-realtime-architecture"
+import type { SyncEvent, SyncOperation, SyncResult, SyncConfig } from "@/lib/realtime-sync/sync-types"
+import { defaultSyncConfig } from "@/lib/realtime-sync/sync-types"
 
 type WebSocketSyncOptions = {
   config?: Partial<SyncConfig>
