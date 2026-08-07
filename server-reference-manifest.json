@@ -1,0 +1,78 @@
+{
+  "node": {
+    "0034d05914ebe756a0635a56f47914df06531a66a2": {
+      "workers": {
+        "app/page": {
+          "moduleId": "(action-browser)/./node_modules/.pnpm/next@15.5.22_react-dom@19.2.8_react@19.2.8__react@19.2.8/node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%2C%5B%7B%22id%22%3A%220034d05914ebe756a0635a56f47914df06531a66a2%22%2C%22exportedName%22%3A%22loadContentFromServer%22%2C%22filename%22%3A%22..%2FC%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%7D%2C%7B%22id%22%3A%2240cbebe4ae2f12d09ba6b09d79e454155ea3b31b17%22%2C%22exportedName%22%3A%22saveContentToServer%22%2C%22filename%22%3A%22..%2FC%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%7D%2C%7B%22id%22%3A%226056f3ef144b5de016a3bdf48aa4cb17f6013348da%22%2C%22exportedName%22%3A%22submitQuoteForm%22%2C%22filename%22%3A%22..%2FC%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%7D%2C%7B%22id%22%3A%226077e8e76f1f3d3888b9fbfab783bf19f6b2ed717f%22%2C%22exportedName%22%3A%22submitContactForm%22%2C%22filename%22%3A%22..%2FC%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        },
+        "app/_not-found/page": {
+          "moduleId": "(action-browser)/./node_modules/.pnpm/next@15.5.22_react-dom@19.2.8_react@19.2.8__react@19.2.8/node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%2C%5B%7B%22id%22%3A%220034d05914ebe756a0635a56f47914df06531a66a2%22%2C%22exportedName%22%3A%22loadContentFromServer%22%2C%22filename%22%3A%22..%2FC%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%7D%2C%7B%22id%22%3A%2240cbebe4ae2f12d09ba6b09d79e454155ea3b31b17%22%2C%22exportedName%22%3A%22saveContentToServer%22%2C%22filename%22%3A%22..%2FC%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%7D%2C%7B%22id%22%3A%226056f3ef144b5de016a3bdf48aa4cb17f6013348da%22%2C%22exportedName%22%3A%22submitQuoteForm%22%2C%22filename%22%3A%22..%2FC%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%7D%2C%7B%22id%22%3A%226077e8e76f1f3d3888b9fbfab783bf19f6b2ed717f%22%2C%22exportedName%22%3A%22submitContactForm%22%2C%22filename%22%3A%22..%2FC%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/page": "action-browser",
+        "app/_not-found/page": "action-browser"
+      },
+      "filename": "../C:\\Users\\rohid\\Downloads\\ngm website\\app\\actions.ts",
+      "exportedName": "loadContentFromServer"
+    },
+    "40cbebe4ae2f12d09ba6b09d79e454155ea3b31b17": {
+      "workers": {
+        "app/page": {
+          "moduleId": "(action-browser)/./node_modules/.pnpm/next@15.5.22_react-dom@19.2.8_react@19.2.8__react@19.2.8/node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%2C%5B%7B%22id%22%3A%220034d05914ebe756a0635a56f47914df06531a66a2%22%2C%22exportedName%22%3A%22loadContentFromServer%22%2C%22filename%22%3A%22..%2FC%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%7D%2C%7B%22id%22%3A%2240cbebe4ae2f12d09ba6b09d79e454155ea3b31b17%22%2C%22exportedName%22%3A%22saveContentToServer%22%2C%22filename%22%3A%22..%2FC%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%7D%2C%7B%22id%22%3A%226056f3ef144b5de016a3bdf48aa4cb17f6013348da%22%2C%22exportedName%22%3A%22submitQuoteForm%22%2C%22filename%22%3A%22..%2FC%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%7D%2C%7B%22id%22%3A%226077e8e76f1f3d3888b9fbfab783bf19f6b2ed717f%22%2C%22exportedName%22%3A%22submitContactForm%22%2C%22filename%22%3A%22..%2FC%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        },
+        "app/_not-found/page": {
+          "moduleId": "(action-browser)/./node_modules/.pnpm/next@15.5.22_react-dom@19.2.8_react@19.2.8__react@19.2.8/node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%2C%5B%7B%22id%22%3A%220034d05914ebe756a0635a56f47914df06531a66a2%22%2C%22exportedName%22%3A%22loadContentFromServer%22%2C%22filename%22%3A%22..%2FC%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%7D%2C%7B%22id%22%3A%2240cbebe4ae2f12d09ba6b09d79e454155ea3b31b17%22%2C%22exportedName%22%3A%22saveContentToServer%22%2C%22filename%22%3A%22..%2FC%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%7D%2C%7B%22id%22%3A%226056f3ef144b5de016a3bdf48aa4cb17f6013348da%22%2C%22exportedName%22%3A%22submitQuoteForm%22%2C%22filename%22%3A%22..%2FC%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%7D%2C%7B%22id%22%3A%226077e8e76f1f3d3888b9fbfab783bf19f6b2ed717f%22%2C%22exportedName%22%3A%22submitContactForm%22%2C%22filename%22%3A%22..%2FC%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/page": "action-browser",
+        "app/_not-found/page": "action-browser"
+      },
+      "filename": "../C:\\Users\\rohid\\Downloads\\ngm website\\app\\actions.ts",
+      "exportedName": "saveContentToServer"
+    },
+    "6056f3ef144b5de016a3bdf48aa4cb17f6013348da": {
+      "workers": {
+        "app/page": {
+          "moduleId": "(action-browser)/./node_modules/.pnpm/next@15.5.22_react-dom@19.2.8_react@19.2.8__react@19.2.8/node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%2C%5B%7B%22id%22%3A%220034d05914ebe756a0635a56f47914df06531a66a2%22%2C%22exportedName%22%3A%22loadContentFromServer%22%2C%22filename%22%3A%22..%2FC%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%7D%2C%7B%22id%22%3A%2240cbebe4ae2f12d09ba6b09d79e454155ea3b31b17%22%2C%22exportedName%22%3A%22saveContentToServer%22%2C%22filename%22%3A%22..%2FC%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%7D%2C%7B%22id%22%3A%226056f3ef144b5de016a3bdf48aa4cb17f6013348da%22%2C%22exportedName%22%3A%22submitQuoteForm%22%2C%22filename%22%3A%22..%2FC%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%7D%2C%7B%22id%22%3A%226077e8e76f1f3d3888b9fbfab783bf19f6b2ed717f%22%2C%22exportedName%22%3A%22submitContactForm%22%2C%22filename%22%3A%22..%2FC%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        },
+        "app/_not-found/page": {
+          "moduleId": "(action-browser)/./node_modules/.pnpm/next@15.5.22_react-dom@19.2.8_react@19.2.8__react@19.2.8/node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%2C%5B%7B%22id%22%3A%220034d05914ebe756a0635a56f47914df06531a66a2%22%2C%22exportedName%22%3A%22loadContentFromServer%22%2C%22filename%22%3A%22..%2FC%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%7D%2C%7B%22id%22%3A%2240cbebe4ae2f12d09ba6b09d79e454155ea3b31b17%22%2C%22exportedName%22%3A%22saveContentToServer%22%2C%22filename%22%3A%22..%2FC%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%7D%2C%7B%22id%22%3A%226056f3ef144b5de016a3bdf48aa4cb17f6013348da%22%2C%22exportedName%22%3A%22submitQuoteForm%22%2C%22filename%22%3A%22..%2FC%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%7D%2C%7B%22id%22%3A%226077e8e76f1f3d3888b9fbfab783bf19f6b2ed717f%22%2C%22exportedName%22%3A%22submitContactForm%22%2C%22filename%22%3A%22..%2FC%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/page": "action-browser",
+        "app/_not-found/page": "action-browser"
+      },
+      "filename": "../C:\\Users\\rohid\\Downloads\\ngm website\\app\\actions.ts",
+      "exportedName": "submitQuoteForm"
+    },
+    "6077e8e76f1f3d3888b9fbfab783bf19f6b2ed717f": {
+      "workers": {
+        "app/page": {
+          "moduleId": "(action-browser)/./node_modules/.pnpm/next@15.5.22_react-dom@19.2.8_react@19.2.8__react@19.2.8/node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%2C%5B%7B%22id%22%3A%220034d05914ebe756a0635a56f47914df06531a66a2%22%2C%22exportedName%22%3A%22loadContentFromServer%22%2C%22filename%22%3A%22..%2FC%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%7D%2C%7B%22id%22%3A%2240cbebe4ae2f12d09ba6b09d79e454155ea3b31b17%22%2C%22exportedName%22%3A%22saveContentToServer%22%2C%22filename%22%3A%22..%2FC%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%7D%2C%7B%22id%22%3A%226056f3ef144b5de016a3bdf48aa4cb17f6013348da%22%2C%22exportedName%22%3A%22submitQuoteForm%22%2C%22filename%22%3A%22..%2FC%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%7D%2C%7B%22id%22%3A%226077e8e76f1f3d3888b9fbfab783bf19f6b2ed717f%22%2C%22exportedName%22%3A%22submitContactForm%22%2C%22filename%22%3A%22..%2FC%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        },
+        "app/_not-found/page": {
+          "moduleId": "(action-browser)/./node_modules/.pnpm/next@15.5.22_react-dom@19.2.8_react@19.2.8__react@19.2.8/node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%2C%5B%7B%22id%22%3A%220034d05914ebe756a0635a56f47914df06531a66a2%22%2C%22exportedName%22%3A%22loadContentFromServer%22%2C%22filename%22%3A%22..%2FC%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%7D%2C%7B%22id%22%3A%2240cbebe4ae2f12d09ba6b09d79e454155ea3b31b17%22%2C%22exportedName%22%3A%22saveContentToServer%22%2C%22filename%22%3A%22..%2FC%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%7D%2C%7B%22id%22%3A%226056f3ef144b5de016a3bdf48aa4cb17f6013348da%22%2C%22exportedName%22%3A%22submitQuoteForm%22%2C%22filename%22%3A%22..%2FC%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%7D%2C%7B%22id%22%3A%226077e8e76f1f3d3888b9fbfab783bf19f6b2ed717f%22%2C%22exportedName%22%3A%22submitContactForm%22%2C%22filename%22%3A%22..%2FC%3A%5C%5CUsers%5C%5Crohid%5C%5CDownloads%5C%5Cngm%20website%5C%5Capp%5C%5Cactions.ts%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/page": "action-browser",
+        "app/_not-found/page": "action-browser"
+      },
+      "filename": "../C:\\Users\\rohid\\Downloads\\ngm website\\app\\actions.ts",
+      "exportedName": "submitContactForm"
+    }
+  },
+  "edge": {},
+  "encryptionKey": "LVqE3lDwlFvooRSuO8TQqmt7fYLaWnsNffTnlzaQaZY="
+}

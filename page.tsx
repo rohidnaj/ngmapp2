@@ -12,6 +12,8 @@ import { Textarea } from "@/components/ui/textarea"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Pencil, Trash, Plus, Image as ImageIcon, Upload, Link } from "lucide-react"
 
+export const dynamic = "force-dynamic"
+
 function GalleryPage() {
   const { content, updateGalleryImage, addGalleryImage, removeGalleryImage } = useContent()
   const [dialogOpen, setDialogOpen] = useState(false)

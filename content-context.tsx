@@ -602,10 +602,6 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
     clientId,
   }
 
-  if (loading) {
-    return <div className="flex items-center justify-center min-h-screen">Loading...</div>
-  }
-
   return <ContentContext.Provider value={value}>{children}</ContentContext.Provider>
 }
 
