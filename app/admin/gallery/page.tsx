@@ -2,7 +2,7 @@
 import { useState, ChangeEvent } from "react"
 import { withAuth } from "@/lib/auth"
 import { useContent, type GalleryImage } from "@/lib/content-context"
-import { useFileUpload } from "@/lib/realtime-sync/file-sync-manager"
+import { useFileUpload } from "@/hooks/use-file-upload"
 import AdminLayout from "@/components/admin/admin-layout"
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
