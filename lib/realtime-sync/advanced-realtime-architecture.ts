@@ -423,5 +423,3 @@ export const defaultSyncConfig: SyncConfig = {
   reconnectInterval: 3000,
   heartbeatInterval: 30000,
 }
-
-export { RealtimeSyncEngine }
