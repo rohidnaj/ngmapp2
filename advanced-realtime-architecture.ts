@@ -16,62 +16,29 @@
 
 import { EventEmitter } from 'events'
 import { createClient as createRedisClient } from 'redis'
+import type {
+  SyncEvent,
+  SyncClient,
+  ClientCapabilities,
+  SyncOperation,
+  ConflictResolution,
+  Conflict,
+  SyncResult,
+  SyncConfig,
+} from './sync-types'
 
-// =============================================================================
-// TYPES AND INTERFACES
-// =============================================================================
-
-export interface SyncEvent {
-  id: string
-  type: 'content-update' | 'file-upload' | 'file-delete' | 'user-action' | 'system-event'
-  timestamp: number
-  clientId: string
-  sessionId: string
-  data: any
-  version: number
-  parentVersion?: number
-  checksum?: string
+// Re-export for any server-side code that imports types from this module
+export type {
+  SyncEvent,
+  SyncClient,
+  ClientCapabilities,
+  SyncOperation,
+  ConflictResolution,
+  Conflict,
+  SyncResult,
+  SyncConfig,
 }
-
-export interface SyncClient {
-  id: string
-  sessionId: string
-  userId?: string
-  connectedAt: number
-  lastActivity: number
-  capabilities: ClientCapabilities
-}
-
-export interface ClientCapabilities {
-  supportsWebSocket: boolean
-  supportsSSE: boolean
-  supportsFileUpload: boolean
-  maxFileSize: number
-}
-
-export interface SyncOperation {
-  id: string
-  type: 'create' | 'update' | 'delete' | 'batch'
-  entityType: string
-  entityId: string
-  data: any
-  optimistic: boolean
-  conflictResolution?: 'merge' | 'overwrite' | 'manual'
-}
-
-export interface ConflictResolution {
-  operationId: string
-  conflicts: Conflict[]
-  resolution: 'accept-local' | 'accept-remote' | 'merge' | 'manual'
-  mergedData?: any
-}
-
-export interface Conflict {
-  field: string
-  localValue: any
-  remoteValue: any
-  lastModified: number
-}
+export { defaultSyncConfig } from './sync-types'
 
 // =============================================================================
 // CORE SYNCHRONIZATION ENGINE
@@ -387,36 +354,4 @@ interface UploadProgress {
   uploaded: number
   total: number
   status: 'uploading' | 'completed' | 'failed'
-}
-
-// =============================================================================
-// REACT HOOKS AND COMPONENTS INTEGRATION
-// =============================================================================
-
-export interface SyncResult {
-  success: boolean
-  operationId?: string
-  timestamp?: number
-  requiresManualResolution?: boolean
-  conflicts?: Conflict[]
-  error?: string
-}
-
-export interface SyncConfig {
-  enableOptimisticUpdates: boolean
-  enableConflictResolution: boolean
-  enableFileSync: boolean
-  maxReconnectAttempts: number
-  reconnectInterval: number
-  heartbeatInterval: number
-}
-
-// Default configuration
-export const defaultSyncConfig: SyncConfig = {
-  enableOptimisticUpdates: true,
-  enableConflictResolution: true,
-  enableFileSync: true,
-  maxReconnectAttempts: 5,
-  reconnectInterval: 3000,
-  heartbeatInterval: 30000,
 }
