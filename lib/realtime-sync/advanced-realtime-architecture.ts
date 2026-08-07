@@ -185,7 +185,10 @@ export class RealtimeSyncEngine extends EventEmitter {
     } catch (error) {
       console.error('Sync operation failed:', error)
       this.operations.delete(operationId)
-      return { success: false, error: error.message }
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : String(error),
+      }
     }
   }
 
@@ -390,7 +393,7 @@ interface UploadProgress {
 }
 
 // =============================================================================
-// REACT HOOKS AND COMPONENTS INTEGRATION
+// SHARED SYNC CONFIGURATION AND RESULT TYPES
 // =============================================================================
 
 export interface SyncResult {
