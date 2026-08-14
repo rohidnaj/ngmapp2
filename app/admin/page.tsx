@@ -20,7 +20,6 @@ import {
   LogOut,
   RefreshCw,
   Tag,
-  Sparkles,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -55,7 +54,7 @@ export default function AdminPage() {
   // Search & Filter state
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
-  
+
   // Selected Lead modal state
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [updatingStatus, setUpdatingStatus] = useState<string | null>(null);
@@ -135,7 +134,7 @@ export default function AdminPage() {
       setLeads((prev) =>
         prev.map((lead) => (lead.id === leadId ? { ...lead, status: newStatus as any } : lead))
       );
-      
+
       // Update selected lead modal view if open
       if (selectedLead && selectedLead.id === leadId) {
         setSelectedLead((prev) => prev ? { ...prev, status: newStatus as any } : null);
@@ -311,17 +310,6 @@ export default function AdminPage() {
           </div>
           <div className="flex items-center gap-2">
             <Button
-              asChild
-              variant="outline"
-              size="sm"
-              className="rounded-full flex items-center gap-1 border-forest/30 text-forest hover:bg-forest hover:text-white"
-            >
-              <a href="/edit" target="_blank">
-                <Sparkles className="h-4 w-4 text-forest group-hover:text-white" />
-                Puck AI Visual Editor
-              </a>
-            </Button>
-            <Button
               variant="outline"
               size="sm"
               onClick={() => fetchLeads(passcode)}
@@ -433,8 +421,8 @@ export default function AdminPage() {
                 {status === 'all'
                   ? 'All Statuses'
                   : status === 'estimate_sent'
-                  ? 'Estimate Sent'
-                  : status.charAt(0).toUpperCase() + status.slice(1)}
+                    ? 'Estimate Sent'
+                    : status.charAt(0).toUpperCase() + status.slice(1)}
               </button>
             ))}
           </div>
