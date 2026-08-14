@@ -20,6 +20,7 @@ import {
   LogOut,
   RefreshCw,
   Tag,
+  Sparkles,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -309,6 +310,17 @@ export default function AdminPage() {
             </h1>
           </div>
           <div className="flex items-center gap-2">
+            <Button
+              asChild
+              variant="outline"
+              size="sm"
+              className="rounded-full flex items-center gap-1 border-forest/30 text-forest hover:bg-forest hover:text-white"
+            >
+              <a href="/edit" target="_blank">
+                <Sparkles className="h-4 w-4 text-forest group-hover:text-white" />
+                Puck AI Visual Editor
+              </a>
+            </Button>
             <Button
               variant="outline"
               size="sm"
