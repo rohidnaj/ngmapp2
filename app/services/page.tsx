@@ -107,8 +107,7 @@ const detailedServices = [
     title: 'Garden Design',
     description:
       'Professional design consultations and custom concepts to turn your yard into a beautiful, harmonious outdoor living space.',
-    image:
-      'https://images.pexels.com/photos/32959283/pexels-photo-32959283.jpeg?auto=compress&cs=tinysrgb&w=1200&fm=webp',
+    image: '/images/garden-design.jpg',
     features: [
       'On-site design consultations',
       'Harmonious plant layout concepts',
@@ -122,8 +121,7 @@ const detailedServices = [
     title: 'Drip Irrigation',
     description:
       'Keep your garden beds watered automatically and efficiently, conserving water while keeping plants hydrated.',
-    image:
-      'https://images.pexels.com/photos/450064/pexels-photo-450064.jpeg?auto=compress&cs=tinysrgb&w=1200&fm=webp',
+    image: '/images/drip-irrigation.jpg',
     features: [
       'Custom drip irrigation system design',
       'Professional installation of drip emitters and tubing',
@@ -136,8 +134,7 @@ const detailedServices = [
     title: 'Power Washing',
     description:
       'Restore dirty, stained surfaces back to their original state. We blast away grime, moss, and dirt from patios, walkways, and driveways.',
-    image:
-      'https://images.pexels.com/photos/4876678/pexels-photo-4876678.jpeg?auto=compress&cs=tinysrgb&w=1200&fm=webp',
+    image: '/images/power-washing.jpg',
     features: [
       'Driveway power washing and cleaning',
       'Sidewalk and walkway restoration',
@@ -151,8 +148,7 @@ const detailedServices = [
     title: 'Outdoor Lighting Design',
     description:
       'Highlight the features of your landscape and improve property safety at night with custom lighting design.',
-    image:
-      'https://images.pexels.com/photos/8143684/pexels-photo-8143684.jpeg?auto=compress&cs=tinysrgb&w=1200&fm=webp',
+    image: '/images/outdoor-lighting.jpg',
     features: [
       'Landscape accent lighting concepts',
       'Walkway and path illumination design',

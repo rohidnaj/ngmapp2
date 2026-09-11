@@ -123,8 +123,7 @@ export const services: ServiceData[] = [
       'Garden consultation and design services to bring your outdoor vision to life.',
     description:
       'Transform your outdoor space with custom garden design tailored to your property, lifestyle, and aesthetic preferences.',
-    image:
-      'https://images.pexels.com/photos/32959283/pexels-photo-32959283.jpeg?auto=compress&cs=tinysrgb&w=800&fm=webp',
+    image: '/images/garden-design.jpg',
     href: '/services#garden-design',
     features: [
       'Garden consultation',
@@ -139,8 +138,7 @@ export const services: ServiceData[] = [
       'Drip irrigation installation to keep your garden efficiently watered and thriving.',
     description:
       'Efficient drip irrigation system installation to keep your garden properly watered while conserving water and reducing manual effort.',
-    image:
-      'https://images.pexels.com/photos/450064/pexels-photo-450064.jpeg?auto=compress&cs=tinysrgb&w=800&fm=webp',
+    image: '/images/drip-irrigation.jpg',
     href: '/services#drip-irrigation',
     features: [
       'Drip irrigation installation',
@@ -153,8 +151,7 @@ export const services: ServiceData[] = [
       'Professional power washing for driveways, patios, decks, and walkways.',
     description:
       'Professional power washing to restore driveways, patios, decks, and walkways to like-new condition by removing built-up grime and stains.',
-    image:
-      'https://images.pexels.com/photos/4876678/pexels-photo-4876678.jpeg?auto=compress&cs=tinysrgb&w=800&fm=webp',
+    image: '/images/power-washing.jpg',
     href: '/services#power-washing',
     features: [
       'Outdoor surface cleaning',
@@ -167,8 +164,7 @@ export const services: ServiceData[] = [
       'Landscape lighting design to enhance the beauty and safety of your outdoor space.',
     description:
       'Landscape lighting design to enhance the beauty, safety, and usability of your outdoor space after dark.',
-    image:
-      'https://images.pexels.com/photos/8143684/pexels-photo-8143684.jpeg?auto=compress&cs=tinysrgb&w=800&fm=webp',
+    image: '/images/outdoor-lighting.jpg',
     href: '/services#outdoor-lighting',
     features: [
       'Landscape lighting design',
@@ -178,10 +174,36 @@ export const services: ServiceData[] = [
 
 export const galleryImages = [
   {
-    src: 'https://images.pexels.com/photos/8082322/pexels-photo-8082322.jpeg?auto=compress&cs=tinysrgb&w=800&fm=webp',
-    alt: 'Landscaped property with lush greenery',
+    src: '/images/garden-design.jpg',
+    alt: 'Custom luxury garden landscape design with stone path',
     category: 'Garden Design',
     span: true,
+  },
+  {
+    src: '/images/drip-irrigation.jpg',
+    alt: 'Micro drip irrigation installation delivering water to garden plants',
+    category: 'Drip Irrigation',
+  },
+  {
+    src: '/images/power-washing.jpg',
+    alt: 'High pressure washing cleaning stone patio driveway',
+    category: 'Power Washing',
+  },
+  {
+    src: '/images/outdoor-lighting.jpg',
+    alt: 'Twilight landscape lighting design with illuminated trees and garden path',
+    category: 'Outdoor Lighting',
+    span: true,
+  },
+  {
+    src: '/images/garden-design-2.jpg',
+    alt: 'Modern garden bed layout with stepping stone pathway',
+    category: 'Garden Design',
+  },
+  {
+    src: '/images/drip-irrigation-2.jpg',
+    alt: 'Automated drip irrigation emitters watering flower bed soil',
+    category: 'Drip Irrigation',
   },
   {
     src: 'https://images.pexels.com/photos/6728925/pexels-photo-6728925.jpeg?auto=compress&cs=tinysrgb&w=800&fm=webp',
@@ -205,20 +227,9 @@ export const galleryImages = [
     category: 'Garden Maintenance',
   },
   {
-    src: 'https://images.pexels.com/photos/32959283/pexels-photo-32959283.jpeg?auto=compress&cs=tinysrgb&w=800&fm=webp',
-    alt: 'Stone pathway garden design',
-    category: 'Garden Design',
-  },
-  {
     src: 'https://images.pexels.com/photos/7728050/pexels-photo-7728050.jpeg?auto=compress&cs=tinysrgb&w=800&fm=webp',
     alt: 'Fresh flower planting in garden bed',
     category: 'Planting',
-  },
-  {
-    src: 'https://images.pexels.com/photos/8143684/pexels-photo-8143684.jpeg?auto=compress&cs=tinysrgb&w=800&fm=webp',
-    alt: 'Modern outdoor patio with garden',
-    category: 'Outdoor Improvements',
-    span: true,
   },
   {
     src: 'https://images.pexels.com/photos/16442678/pexels-photo-16442678.jpeg?auto=compress&cs=tinysrgb&w=800&fm=webp',
@@ -226,19 +237,9 @@ export const galleryImages = [
     category: 'Cleanups',
   },
   {
-    src: 'https://images.pexels.com/photos/450064/pexels-photo-450064.jpeg?auto=compress&cs=tinysrgb&w=800&fm=webp',
-    alt: 'Garden pathway with pebbled walkway',
-    category: 'Garden Design',
-  },
-  {
     src: 'https://images.pexels.com/photos/4162016/pexels-photo-4162016.jpeg?auto=compress&cs=tinysrgb&w=800&fm=webp',
     alt: 'Lawn mower cutting fresh green grass',
     category: 'Lawn Care',
-  },
-  {
-    src: 'https://images.pexels.com/photos/4876678/pexels-photo-4876678.jpeg?auto=compress&cs=tinysrgb&w=800&fm=webp',
-    alt: 'Power washing driveway surface',
-    category: 'Outdoor Improvements',
   },
 ];
 

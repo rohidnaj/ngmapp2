@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Reveal } from '@/components/site/reveal';
-import { BeforeAfterSlider } from '@/components/site/before-after-slider';
 import { GalleryCard } from '@/components/site/gallery-card';
 import { galleryImages } from '@/lib/site-data';
 import { cn } from '@/lib/utils';
@@ -14,34 +13,13 @@ import { cn } from '@/lib/utils';
 const categories = [
   'All',
   'Garden Design',
+  'Drip Irrigation',
+  'Power Washing',
+  'Outdoor Lighting',
   'Lawn Care',
   'Planting',
   'Cleanups',
   'Outdoor Improvements',
-];
-
-const beforeAfterSets = [
-  {
-    before:
-      'https://images.pexels.com/photos/3971211/pexels-photo-3971211.jpeg?auto=compress&cs=tinysrgb&w=1200',
-    after:
-      'https://images.pexels.com/photos/8082322/pexels-photo-8082322.jpeg?auto=compress&cs=tinysrgb&w=1200',
-    label: 'Complete Backyard Transformation',
-  },
-  {
-    before:
-      'https://images.pexels.com/photos/37554739/pexels-photo-37554739.jpeg?auto=compress&cs=tinysrgb&w=1200',
-    after:
-      'https://images.pexels.com/photos/6728925/pexels-photo-6728925.jpeg?auto=compress&cs=tinysrgb&w=1200',
-    label: 'Lawn Restoration Project',
-  },
-  {
-    before:
-      'https://images.pexels.com/photos/4488094/pexels-photo-4488094.jpeg?auto=compress&cs=tinysrgb&w=1200',
-    after:
-      'https://images.pexels.com/photos/31215699/pexels-photo-31215699.jpeg?auto=compress&cs=tinysrgb&w=1200',
-    label: 'Garden Bed Renewal',
-  },
 ];
 
 export function GalleryContent() {
@@ -77,39 +55,6 @@ export function GalleryContent() {
               across Maple Ridge and the Lower Mainland.
             </p>
           </Reveal>
-        </div>
-      </section>
-
-      {/* Before & After Sliders */}
-      <section className="bg-background py-24 sm:py-32">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Reveal className="mx-auto max-w-2xl text-center">
-            <span className="text-sm font-semibold uppercase tracking-widest text-forest">
-              Before & After
-            </span>
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl text-balance">
-              Drag to see the transformation
-            </h2>
-            <p className="mt-4 text-base text-muted-foreground sm:text-lg">
-              Slide the handle left and right to compare before and after results.
-            </p>
-          </Reveal>
-
-          <div className="mt-16 space-y-12">
-            {beforeAfterSets.map((set, i) => (
-              <Reveal key={i} delay={i * 100}>
-                <div className="mx-auto max-w-4xl">
-                  <h3 className="mb-4 text-center text-lg font-medium text-muted-foreground">
-                    {set.label}
-                  </h3>
-                  <BeforeAfterSlider
-                    beforeImage={set.before}
-                    afterImage={set.after}
-                  />
-                </div>
-              </Reveal>
-            ))}
-          </div>
         </div>
       </section>
 

@@ -2,13 +2,17 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
 // Setup service-role client to bypass RLS securely on the server
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+const DEFAULT_SUPABASE_URL = 'https://ezlhqlohllxhthatlwwf.supabase.co';
+const DEFAULT_SUPABASE_ANON_KEY =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV6bGhxbG9obGx4aHRoYXRsd3dmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY1ODkwOTUsImV4cCI6MjEwMjE2NTA5NX0.d60hv0hQwT1MpzcCDK-1WSmmSpp6-FM2VU-XChZqV8U';
 
-const supabase = createClient(
-  supabaseUrl,
-  supabaseServiceKey || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
-);
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || DEFAULT_SUPABASE_URL;
+const supabaseServiceKey =
+  process.env.SUPABASE_SERVICE_ROLE_KEY ||
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+  DEFAULT_SUPABASE_ANON_KEY;
+
+const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
 function getPasscode(req: Request): string | null {
   const authHeader = req.headers.get('Authorization');
@@ -17,8 +21,8 @@ function getPasscode(req: Request): string | null {
 }
 
 function verifyAuth(passcode: string | null): boolean {
-  const correctPassword = process.env.ADMIN_PASSWORD || 'ngm-admin-2026';
-  return passcode !== null && passcode === correctPassword;
+  const correctPassword = (process.env.ADMIN_PASSWORD || 'ngm-admin-2026').trim();
+  return passcode !== null && passcode.trim() === correctPassword;
 }
 
 // PATCH to update status of a lead
