@@ -2,25 +2,19 @@
 
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
-
-export interface GalleryImageData {
-  src: string;
-  alt: string;
-  category: string;
-  span?: boolean;
-}
+import { GalleryItem } from '@/lib/site-data';
 
 export function GalleryCard({
   data,
   className,
 }: {
-  data: GalleryImageData;
+  data: GalleryItem;
   className?: string;
 }) {
   return (
     <div
       className={cn(
-        'group relative overflow-hidden rounded-2xl border border-border shadow-sm',
+        'group relative overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:shadow-md',
         className
       )}
     >
@@ -35,14 +29,23 @@ export function GalleryCard({
           alt={data.alt}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          className="object-cover transition-transform duration-700 group-hover:scale-110"
+          className="object-cover transition-transform duration-700 group-hover:scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-        <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-4 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
-          <span className="inline-block rounded-full bg-white/20 px-3 py-1 text-xs font-medium text-white backdrop-blur-md">
-            {data.category}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-80 transition-opacity duration-300 group-hover:opacity-90" />
+        
+        <div className="absolute top-3 right-3">
+          <span className="rounded-full bg-black/60 px-2.5 py-1 text-[11px] font-medium text-white/90 backdrop-blur-md border border-white/10">
+            Service Illustration
           </span>
-          <p className="mt-2 text-sm font-medium text-white">{data.alt}</p>
+        </div>
+
+        <div className="absolute bottom-0 left-0 right-0 p-5">
+          <span className="inline-block rounded-full bg-forest/90 px-3 py-1 text-xs font-semibold text-white shadow-sm">
+            {data.serviceCategory}
+          </span>
+          <p className="mt-2 text-sm font-medium text-white line-clamp-2">
+            {data.label}
+          </p>
         </div>
       </div>
     </div>

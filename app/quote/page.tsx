@@ -5,14 +5,47 @@ import { Reveal } from '@/components/site/reveal';
 import { Phone, Camera, Upload } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Request a Quote | Najm Garden & Maintenance Ltd.',
+  title: 'Request an Estimate | Najm Garden & Maintenance Ltd.',
   description:
-    'Request a free landscaping estimate from Najm Garden & Maintenance Ltd. Tell us about your property and the services you need. Serving Maple Ridge and the Lower Mainland BC.',
+    'Request a landscaping or garden maintenance estimate from Najm Garden & Maintenance Ltd. Serving Maple Ridge, Pitt Meadows, Langley, Mission, Coquitlam & the Lower Mainland BC.',
+  alternates: {
+    canonical: 'https://ngmlandscape.ca/quote',
+  },
+  openGraph: {
+    title: 'Request an Estimate | NGM Landscape Maple Ridge BC',
+    description:
+      'Request an estimate for lawn care, garden maintenance, planting, mulching, or drip irrigation in Maple Ridge and the Lower Mainland.',
+    url: 'https://ngmlandscape.ca/quote',
+    type: 'website',
+  },
 };
 
 export default function QuotePage() {
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://ngmlandscape.ca',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Request an Estimate',
+        item: 'https://ngmlandscape.ca/quote',
+      },
+    ],
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       {/* Hero */}
       <section className="relative flex min-h-[40vh] items-center justify-center overflow-hidden pt-20">
         <div className="absolute inset-0">

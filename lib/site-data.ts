@@ -1,9 +1,16 @@
 export const siteConfig = {
   name: 'Najm Garden & Maintenance Ltd.',
+  shortName: 'NGM Landscape',
   phone: '778-233-1599',
   email: 'info@ngmlandscape.ca',
   location: 'Maple Ridge, BC',
   owner: 'Najmudin Najm',
+  primaryArea: 'Maple Ridge and the Lower Mainland / Fraser Valley',
+  // Verified business profile URLs. Keep empty if not verified yet to avoid broken external links.
+  social: {
+    instagram: '', // Add verified URL (e.g. 'https://www.instagram.com/ngmlandscape')
+    facebook: '',  // Add verified URL (e.g. 'https://www.facebook.com/ngmlandscape')
+  },
 };
 
 export interface ServiceData {
@@ -18,290 +25,361 @@ export interface ServiceData {
 
 export const services: ServiceData[] = [
   {
-    id: 'lawn-care',
-    title: 'Lawn Care',
+    id: 'lawn-mowing-weeding-edging',
+    title: 'Lawn Mowing, Weeding & Edging',
     shortDescription:
-      'Professional mowing, edging, weeding, and weed control to keep your lawn healthy and well-maintained.',
+      'Regular mowing, precision line edging along walkways and beds, and thorough weeding to keep your turf immaculate.',
     description:
-      'Keep your lawn healthy, green, and perfectly manicured with our comprehensive lawn care services. We handle everything from regular mowing to targeted weed control.',
+      'Keep your turf healthy, clean-cut, and neatly edged with our reliable lawn care services. We provide scheduled mowing, crisp boundary edging along walkways and flower beds, and proactive weeding.',
     image:
       'https://images.pexels.com/photos/6728925/pexels-photo-6728925.jpeg?auto=compress&cs=tinysrgb&w=800&fm=webp',
-    href: '/services#lawn-care',
+    href: '/services#lawn-mowing-weeding-edging',
     features: [
-      'Lawn mowing',
-      'Edging along walkways and garden beds',
-      'Weeding',
-      'Weed control',
-      'General lawn maintenance',
-    ],
-  },
-  {
-    id: 'garden-maintenance',
-    title: 'Garden Maintenance',
-    shortDescription:
-      'Complete garden care including cleanup, weeding, bed maintenance, plant care, and mulching.',
-    description:
-      'Complete garden care to keep your outdoor space looking its best throughout every season. From routine cleanup to specialized plant care and mulching.',
-    image:
-      'https://images.pexels.com/photos/38936347/pexels-photo-38936347.jpeg?auto=compress&cs=tinysrgb&w=800&fm=webp',
-    href: '/services#garden-maintenance',
-    features: [
-      'Garden cleanup',
-      'Weeding',
-      'Bed maintenance',
-      'Plant care',
-      'Mulching',
+      'Scheduled lawn mowing',
+      'Walkway and bed edge trimming',
+      'Perimeter and crack weeding',
+      'Grass clipping collection and disposal',
+      'Consistent lawn maintenance',
     ],
   },
   {
     id: 'hedge-shrub-trimming',
     title: 'Hedge & Shrub Trimming',
     shortDescription:
-      'Precise trimming and shaping of hedges and shrubs to maintain a clean, polished look.',
+      'Precise shaping and maintenance pruning for cedars, boxwoods, ornamental shrubs, and boundary hedges.',
     description:
-      'Precise trimming and shaping of hedges and shrubs to maintain a clean, polished look for your property throughout the growing season.',
+      'Maintain strong plant health and sharp curb appeal with our hedge and shrub trimming services. We prune to promote thick growth, level tops, clean sides, and remove dead or diseased branches.',
     image:
       'https://images.pexels.com/photos/38936334/pexels-photo-38936334.jpeg?auto=compress&cs=tinysrgb&w=800&fm=webp',
     href: '/services#hedge-shrub-trimming',
     features: [
-      'Hedge trimming',
-      'Shrub trimming',
-      'General shaping and maintenance',
+      'Cedar and laurel hedge trimming',
+      'Ornamental shrub shaping',
+      'Deadwood and stray branch pruning',
+      'Complete trimmings cleanup and removal',
+      'Seasonal aesthetic shaping',
     ],
   },
   {
     id: 'planting',
-    title: 'Planting',
+    title: 'Planting Flowers, Trees & Shrubs',
     shortDescription:
-      'Expert planting of flowers, shrubs, and trees to bring colour and life to your garden.',
+      'Professional planting of seasonal annuals, perennials, ornamental trees, and shrubs suited to the Pacific Northwest.',
     description:
-      'Expert planting of flowers, shrubs, and trees to bring colour, structure, and life to your garden beds and landscape.',
+      'Bring color, structure, and year-round vitality to your garden beds. We source and install climate-appropriate flowers, shrubs, and trees with proper soil preparation and spacing for long-term health.',
     image:
       'https://images.pexels.com/photos/7728050/pexels-photo-7728050.jpeg?auto=compress&cs=tinysrgb&w=800&fm=webp',
     href: '/services#planting',
     features: [
-      'Flower planting',
-      'Shrub planting',
-      'Tree planting',
+      'Flower bed planting (annuals & perennials)',
+      'Shrub and bush installation',
+      'Specimen tree planting and staking',
+      'Soil preparation and root conditioning',
+      'Species selection suited to BC climate',
     ],
   },
   {
-    id: 'mulching-fertilizing',
-    title: 'Mulching & Fertilizing',
+    id: 'garden-bed-mulching',
+    title: 'Garden Bed Mulching',
     shortDescription:
-      'Garden bed mulching and fertilizer application to suppress weeds and nourish your plants.',
+      'Premium bark and organic mulch installation to suppress weeds, retain soil moisture, and insulate plant roots.',
     description:
-      'Fresh mulch application and fertilizer programs to suppress weeds, retain moisture, and keep your plants well-nourished.',
+      'Protect your soil and enhance garden aesthetics with our garden bed mulching service. Fresh mulch conserves soil moisture during dry BC summers, suppresses weed growth, and prevents winter soil erosion.',
     image:
       'https://images.pexels.com/photos/5807154/pexels-photo-5807154.jpeg?auto=compress&cs=tinysrgb&w=800&fm=webp',
-    href: '/services#mulching-fertilizing',
+    href: '/services#garden-bed-mulching',
     features: [
-      'Garden bed mulching',
-      'Fertilizer application',
+      'Premium dark bark mulch delivery and spreading',
+      'Soil moisture retention for summer heat',
+      'Natural weed suppression',
+      'Root insulation against winter frost',
+      'Clean edge trenching for sharp presentation',
     ],
   },
   {
-    id: 'seasonal-cleanup',
-    title: 'Seasonal Cleanup',
+    id: 'fertilizer-weed-control',
+    title: 'Fertilizer & Weed Control',
     shortDescription:
-      'Spring and fall cleanup services to prepare your yard for the season ahead.',
+      'Nutrient management and targeted weed treatments to promote thick green turf and healthy garden plants.',
     description:
-      'Prepare your property for every season with our thorough cleanup services. We handle the heavy work so your yard stays healthy year-round.',
+      'Give your lawn and garden beds the nutrients they need to grow thick and green. We apply balanced, seasonal fertilizers and provide targeted weed and moss management.',
+    image:
+      'https://images.pexels.com/photos/4162016/pexels-photo-4162016.jpeg?auto=compress&cs=tinysrgb&w=800&fm=webp',
+    href: '/services#fertilizer-weed-control',
+    features: [
+      'Seasonal lawn fertilizing',
+      'Targeted broadleaf weed control',
+      'Garden bed weed treatments',
+      'Moss control and lawn health',
+      'Turf strengthening programs',
+    ],
+  },
+  {
+    id: 'seasonal-cleanups',
+    title: 'Spring & Fall Cleanups',
+    shortDescription:
+      'Comprehensive yard cleanups to reset your landscape after winter or prepare it before the freeze.',
+    description:
+      'Clear accumulated debris, branches, leaves, and wet foliage that can harbor mold and damage lawns. Our seasonal cleanups ensure your property transitions smoothly into every season.',
     image:
       'https://images.pexels.com/photos/16442678/pexels-photo-16442678.jpeg?auto=compress&cs=tinysrgb&w=800&fm=webp',
-    href: '/services#seasonal-cleanup',
+    href: '/services#seasonal-cleanups',
     features: [
-      'Spring cleanup',
-      'Fall cleanup',
-      'Seasonal yard cleanup',
+      'Spring lawn and bed cleanup',
+      'Fall leaf raking and removal',
+      'Perennial cutbacks and deadheading',
+      'Storm debris clearing and eco-disposal',
+      'Lawn aeration preparation',
     ],
   },
   {
-    id: 'garden-design',
-    title: 'Garden Design',
+    id: 'garden-design-consultation',
+    title: 'Garden Design & Consultation',
     shortDescription:
-      'Garden consultation and design services to bring your outdoor vision to life.',
+      'Practical garden layout planning, plant recommendations, and consultations tailored to your space.',
     description:
-      'Transform your outdoor space with custom garden design tailored to your property, lifestyle, and aesthetic preferences.',
+      'Transform neglected or overgrown spaces into functional, attractive garden landscapes. We collaborate with you on plant palettes, bed layouts, and maintenance-conscious design.',
     image: '/images/garden-design.jpg',
-    href: '/services#garden-design',
+    href: '/services#garden-design-consultation',
     features: [
-      'Garden consultation',
-      'Garden design',
-      'Planting concepts',
-    ],
-  },
-  {
-    id: 'drip-irrigation',
-    title: 'Drip Irrigation',
-    shortDescription:
-      'Drip irrigation installation to keep your garden efficiently watered and thriving.',
-    description:
-      'Efficient drip irrigation system installation to keep your garden properly watered while conserving water and reducing manual effort.',
-    image: '/images/drip-irrigation.jpg',
-    href: '/services#drip-irrigation',
-    features: [
-      'Drip irrigation installation',
+      'On-site property consultation',
+      'Plant selection for Pacific Northwest conditions',
+      'Garden bed layout and zoning',
+      'Sunlight and drainage evaluation',
+      'Low-maintenance planting concepts',
     ],
   },
   {
     id: 'power-washing',
-    title: 'Power Washing',
+    title: 'Power Washing Decks & Patios',
     shortDescription:
-      'Professional power washing for driveways, patios, decks, and walkways.',
+      'Restorative pressure washing for concrete driveways, stone patios, pavers, walkways, and wooden decks.',
     description:
-      'Professional power washing to restore driveways, patios, decks, and walkways to like-new condition by removing built-up grime and stains.',
+      'Remove slippery moss, algae, mildew, and accumulated dirt from outdoor surfaces. We restore stone, concrete, and decking to safe, clean condition throughout Maple Ridge and surrounding areas.',
     image: '/images/power-washing.jpg',
     href: '/services#power-washing',
     features: [
-      'Outdoor surface cleaning',
+      'Patio and walkway power washing',
+      'Driveway grime and moss removal',
+      'Deck and wood surface cleaning',
+      'Slip-hazard prevention',
+      'Surface-safe pressure techniques',
     ],
   },
   {
-    id: 'outdoor-lighting',
-    title: 'Outdoor Lighting Design',
+    id: 'drip-irrigation',
+    title: 'Drip Irrigation for Gardens',
     shortDescription:
-      'Landscape lighting design to enhance the beauty and safety of your outdoor space.',
+      'Convenient drip irrigation installation for flower beds, shrubs, and garden trees.',
     description:
-      'Landscape lighting design to enhance the beauty, safety, and usability of your outdoor space after dark.',
-    image: '/images/outdoor-lighting.jpg',
-    href: '/services#outdoor-lighting',
+      'Keep your garden beds, hedges, and shrubs consistently watered without dragging hoses across the yard. We install straightforward drip systems that deliver water directly to your plants.',
+    image: '/images/drip-irrigation.jpg',
+    href: '/services/drip-irrigation',
     features: [
-      'Landscape lighting design',
+      'Flower bed & shrub drip systems',
+      'Direct watering at plant roots',
+      'Automated timer setup',
+      'Neatly hidden under garden mulch',
+      'Spring startup and winter shut-off',
     ],
   },
 ];
 
-export const galleryImages = [
+export interface GalleryItem {
+  src: string;
+  alt: string;
+  serviceCategory: string;
+  label: string;
+  span?: boolean;
+}
+
+export const galleryImages: GalleryItem[] = [
   {
     src: '/images/garden-design.jpg',
-    alt: 'Custom luxury garden landscape design with stone path',
-    category: 'Garden Design',
+    alt: 'Service illustration: Custom garden bed design with structured plants and stepping stone pathway',
+    serviceCategory: 'Garden Design',
+    label: 'Garden Design & Layout',
     span: true,
   },
   {
     src: '/images/drip-irrigation.jpg',
-    alt: 'Micro drip irrigation installation delivering water to garden plants',
-    category: 'Drip Irrigation',
+    alt: 'Service illustration: Micro drip irrigation line delivering water directly to garden plant root zone',
+    serviceCategory: 'Drip Irrigation',
+    label: 'Drip Irrigation Installation',
   },
   {
     src: '/images/power-washing.jpg',
-    alt: 'High pressure washing cleaning stone patio driveway',
-    category: 'Power Washing',
-  },
-  {
-    src: '/images/outdoor-lighting.jpg',
-    alt: 'Twilight landscape lighting design with illuminated trees and garden path',
-    category: 'Outdoor Lighting',
-    span: true,
+    alt: 'Service illustration: High-pressure washing removing moss and grime from stone patio surface',
+    serviceCategory: 'Power Washing',
+    label: 'Patio & Surface Cleaning',
   },
   {
     src: '/images/garden-design-2.jpg',
-    alt: 'Modern garden bed layout with stepping stone pathway',
-    category: 'Garden Design',
+    alt: 'Service illustration: Balanced garden planting concept with curated shrubs and mulch',
+    serviceCategory: 'Garden Design',
+    label: 'Planting & Bed Consultation',
   },
   {
     src: '/images/drip-irrigation-2.jpg',
-    alt: 'Automated drip irrigation emitters watering flower bed soil',
-    category: 'Drip Irrigation',
+    alt: 'Service illustration: Automated drip tubing and emitter hydration in residential garden bed',
+    serviceCategory: 'Drip Irrigation',
+    label: 'Efficient Garden Hydration',
   },
   {
     src: 'https://images.pexels.com/photos/6728925/pexels-photo-6728925.jpeg?auto=compress&cs=tinysrgb&w=800&fm=webp',
-    alt: 'Lawn mowing service',
-    category: 'Lawn Care',
+    alt: 'Service illustration: Professional lawn mowing and crisp walkway edge trimming',
+    serviceCategory: 'Lawn Care',
+    label: 'Mowing & Edge Trimming',
   },
   {
     src: 'https://images.pexels.com/photos/31215699/pexels-photo-31215699.jpeg?auto=compress&cs=tinysrgb&w=800&fm=webp',
-    alt: 'Garden flowers in full bloom',
-    category: 'Planting',
+    alt: 'Service illustration: Healthy perennial flower and shrub planting arrangement',
+    serviceCategory: 'Planting',
+    label: 'Flower & Shrub Planting',
   },
   {
-    src: 'https://images.pexels.com/photos/8583822/pexels-photo-8583822.jpeg?auto=compress&cs=tinysrgb&w=800&fm=webp',
-    alt: 'Patio with fire pit and garden',
-    category: 'Outdoor Improvements',
+    src: 'https://images.pexels.com/photos/38936334/pexels-photo-38936334.jpeg?auto=compress&cs=tinysrgb&w=800&fm=webp',
+    alt: 'Service illustration: Neatly trimmed privacy hedge and shaped garden shrubs',
+    serviceCategory: 'Hedge Trimming',
+    label: 'Hedge & Shrub Maintenance',
+  },
+  {
+    src: 'https://images.pexels.com/photos/5807154/pexels-photo-5807154.jpeg?auto=compress&cs=tinysrgb&w=800&fm=webp',
+    alt: 'Service illustration: Fresh garden bed bark mulch applied for weed suppression and moisture retention',
+    serviceCategory: 'Mulching',
+    label: 'Garden Bed Mulching',
     span: true,
   },
   {
-    src: 'https://images.pexels.com/photos/38936347/pexels-photo-38936347.jpeg?auto=compress&cs=tinysrgb&w=800&fm=webp',
-    alt: 'Hedge trimming and maintenance',
-    category: 'Garden Maintenance',
-  },
-  {
-    src: 'https://images.pexels.com/photos/7728050/pexels-photo-7728050.jpeg?auto=compress&cs=tinysrgb&w=800&fm=webp',
-    alt: 'Fresh flower planting in garden bed',
-    category: 'Planting',
-  },
-  {
     src: 'https://images.pexels.com/photos/16442678/pexels-photo-16442678.jpeg?auto=compress&cs=tinysrgb&w=800&fm=webp',
-    alt: 'Seasonal yard cleanup and leaf removal',
-    category: 'Cleanups',
+    alt: 'Service illustration: Thorough seasonal yard cleanup and wet leaf removal',
+    serviceCategory: 'Seasonal Cleanups',
+    label: 'Spring & Fall Cleanups',
   },
   {
     src: 'https://images.pexels.com/photos/4162016/pexels-photo-4162016.jpeg?auto=compress&cs=tinysrgb&w=800&fm=webp',
-    alt: 'Lawn mower cutting fresh green grass',
-    category: 'Lawn Care',
+    alt: 'Service illustration: Lawn fertilizer and weed management for thick green grass',
+    serviceCategory: 'Fertilizing',
+    label: 'Turf Care & Weed Control',
   },
 ];
 
-export const serviceAreas = [
+export interface ServiceAreaInfo {
+  name: string;
+  tagline: string;
+  description: string;
+  focus: string[];
+}
+
+export const serviceAreas: ServiceAreaInfo[] = [
   {
     name: 'Maple Ridge',
+    tagline: 'Our Home Base & Primary Service Hub',
     description:
-      'Our home base. We provide full-service landscaping and garden maintenance throughout Maple Ridge, BC.',
+      'From Silver Valley and Kanaka Creek to Albion and Cottonwood, we provide full-service lawn care, garden maintenance, mulching, hedge trimming, and drip irrigation tailored to Maple Ridge’s distinct soils and rainy climate.',
+    focus: [
+      'Scheduled lawn mowing & edge trimming',
+      'Hedge & shrub pruning',
+      'Garden bed mulching & weeding',
+      'Drip irrigation installation',
+    ],
   },
   {
     name: 'Pitt Meadows',
+    tagline: 'Reliable Turf & Bed Maintenance for Flatland Properties',
     description:
-      'Reliable lawn care, garden maintenance, and landscape design for Pitt Meadows properties.',
+      'Pitt Meadows properties often feature open exposures and high-water-table soils. We provide attentive lawn mowing, seasonal cleanups, power washing, and aeration prep to keep grass healthy and moss-free.',
+    focus: [
+      'Spring & fall seasonal cleanups',
+      'Lawn mowing, edging & weeding',
+      'Patio & driveway power washing',
+      'Fertilizer & weed management',
+    ],
+  },
+  {
+    name: 'Mission',
+    tagline: 'Care for Hillside Lots & Expansive Gardens',
+    description:
+      'Serving residential properties in Mission with dedicated landscape maintenance, shrub shaping, storm debris clearing, and garden bed restoration suited to northern Fraser Valley terrain.',
+    focus: [
+      'Hedge trimming & shaping',
+      'Garden bed weed control & mulch',
+      'Seasonal debris clearing',
+      'Planting & garden consultation',
+    ],
+  },
+  {
+    name: 'Langley',
+    tagline: 'Curb Appeal & Garden Care for Suburban Homes',
+    description:
+      'We serve homeowners in Langley communities including Walnut Grove and Willoughby, offering consistent garden maintenance, shrub trimming, flower planting, and water-wise drip irrigation.',
+    focus: [
+      'Garden drip irrigation',
+      'Hedge & shrub trimming',
+      'Flower & shrub planting',
+      'Garden bed mulching',
+    ],
   },
   {
     name: 'Coquitlam',
+    tagline: 'Foothill & Suburban Landscape Management',
     description:
-      'Expert garden care, lawn maintenance, and outdoor improvements for properties in Coquitlam.',
+      'Properties in Coquitlam and Westwood Plateau receive high rainfall and heavy shade. We specialize in moss control, power washing, shrub shaping, and lawn care that thrives in foothill conditions.',
+    focus: [
+      'Power washing decks & stone patios',
+      'Hedge leveling & shrub care',
+      'Lawn weed control & fertilizing',
+      'Garden design consultation',
+    ],
   },
   {
     name: 'Port Coquitlam',
+    tagline: 'Neighbourhood Garden & Lawn Upkeep',
     description:
-      'Professional landscaping and garden maintenance services for homes in Port Coquitlam.',
-  },
-  {
-    name: 'Burnaby',
-    description:
-      'Quality landscaping and garden maintenance services for homes and businesses in Burnaby.',
+      'Dependable lawn maintenance, hedge shaping, and garden bed care for residential properties throughout Port Coquitlam.',
+    focus: [
+      'Regular mowing and line edging',
+      'Garden bed mulching & weeding',
+      'Hedge trimming & green disposal',
+      'Seasonal yard resets',
+    ],
   },
   {
     name: 'Surrey',
+    tagline: 'Complete Landscape Care Across North Surrey',
     description:
-      'Professional landscaping services across Surrey, from seasonal cleanup to garden maintenance.',
+      'From Fraser Heights to Guildford and Fleetwood, we deliver expert hedge trimming, seasonal leaf cleanups, lawn care, and garden bed mulching for busy homeowners.',
+    focus: [
+      'Seasonal leaf removal & cleanups',
+      'Lawn mowing & perimeter weeding',
+      'Hedge & shrub shaping',
+      'Drip irrigation installation',
+    ],
   },
   {
-    name: 'Vancouver',
+    name: 'Burnaby',
+    tagline: 'Meticulous Garden Maintenance & Surface Washing',
     description:
-      'Premium landscape design and garden maintenance serving the Vancouver area.',
-  },
-  {
-    name: 'Richmond',
-    description:
-      'Professional landscaping and garden maintenance services for properties in Richmond.',
+      'Providing professional garden bed care, shrub trimming, patio power washing, and seasonal property maintenance for Burnaby residences.',
+    focus: [
+      'Power washing patios & walkways',
+      'Hedge & shrub trimming',
+      'Garden bed rejuvenation & mulching',
+      'Planting flowers, trees & shrubs',
+    ],
   },
 ];
 
 export const quoteServiceOptions = [
-  'Lawn mowing',
-  'Lawn maintenance',
-  'Garden maintenance',
-  'Hedge trimming',
-  'Shrub trimming',
-  'Weeding',
-  'Mulching',
-  'Planting',
-  'Tree planting',
-  'Fertilizing',
+  'Lawn mowing, weeding and edging',
+  'Hedge and shrub trimming',
+  'Planting flowers, trees and shrubs',
+  'Garden bed mulching',
+  'Fertilizer and weed control',
   'Spring cleanup',
   'Fall cleanup',
-  'Garden design',
-  'Drip irrigation',
-  'Power washing',
-  'Outdoor lighting',
+  'Garden design and consultation',
+  'Power washing decks and patios',
+  'Drip irrigation for gardens',
   'Other',
 ];

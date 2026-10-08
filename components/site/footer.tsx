@@ -1,23 +1,32 @@
 import Link from 'next/link';
 import { Leaf, Phone, Mail, MapPin, Instagram, Facebook } from 'lucide-react';
+import { siteConfig } from '@/lib/site-data';
 
 const serviceLinks = [
-  { href: '/services#lawn-care', label: 'Lawn Care' },
-  { href: '/services#garden-maintenance', label: 'Garden Maintenance' },
-  { href: '/services#landscape-design', label: 'Landscape Design' },
-  { href: '/services#seasonal-cleanup', label: 'Seasonal Cleanup' },
-  { href: '/services#outdoor-services', label: 'Outdoor Services' },
+  { href: '/services#lawn-mowing-weeding-edging', label: 'Lawn Mowing & Edging' },
+  { href: '/services#hedge-shrub-trimming', label: 'Hedge & Shrub Trimming' },
+  { href: '/services#planting', label: 'Planting Flowers, Trees & Shrubs' },
+  { href: '/services#garden-bed-mulching', label: 'Garden Bed Mulching' },
+  { href: '/services/drip-irrigation', label: 'Drip Irrigation Installation' },
+  { href: '/services#seasonal-cleanups', label: 'Spring & Fall Cleanups' },
+  { href: '/services#power-washing', label: 'Power Washing Decks & Patios' },
+  { href: '/services#garden-design-consultation', label: 'Garden Design & Consultation' },
 ];
 
 const companyLinks = [
   { href: '/about', label: 'About Us' },
-  { href: '/gallery', label: 'Gallery' },
+  { href: '/services', label: 'All Services' },
+  { href: '/services/drip-irrigation', label: 'Drip Irrigation (Dedicated)' },
+  { href: '/gallery', label: 'Services Visual Guide' },
   { href: '/service-areas', label: 'Service Areas' },
   { href: '/contact', label: 'Contact' },
-  { href: '/quote', label: 'Get a Quote' },
+  { href: '/quote', label: 'Request an Estimate' },
 ];
 
 export function Footer() {
+  const hasInstagram = Boolean(siteConfig.social.instagram);
+  const hasFacebook = Boolean(siteConfig.social.facebook);
+
   return (
     <footer className="border-t border-border bg-muted/30">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
@@ -28,39 +37,65 @@ export function Footer() {
                 <Leaf className="h-5 w-5" />
               </div>
               <span className="text-base font-semibold">
-                Najm Garden & Maintenance Ltd.
+                {siteConfig.name}
               </span>
             </Link>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-              Professional landscaping and garden maintenance in Maple Ridge and
-              the Lower Mainland. Transforming outdoor spaces with care and
-              precision.
+              Professional, trustworthy landscaping and garden maintenance based in
+              Maple Ridge, BC. Caring for lawns, garden beds, and irrigation across
+              the Lower Mainland and Fraser Valley.
             </p>
-            <div className="mt-6 flex gap-3">
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-background text-foreground/60 transition-colors hover:bg-forest hover:text-white"
-                aria-label="Instagram"
-              >
-                <Instagram className="h-4 w-4" />
-              </a>
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-background text-foreground/60 transition-colors hover:bg-forest hover:text-white"
-                aria-label="Facebook"
-              >
-                <Facebook className="h-4 w-4" />
-              </a>
+            <div className="mt-6 flex items-center gap-3">
+              {hasInstagram ? (
+                <a
+                  href={siteConfig.social.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex h-10 w-10 items-center justify-center rounded-full bg-background text-foreground/60 transition-colors hover:bg-forest hover:text-white"
+                  aria-label="Visit NGM Landscape on Instagram"
+                >
+                  <Instagram className="h-4 w-4" />
+                </a>
+              ) : (
+                <span
+                  title="Official Instagram profile link pending confirmation from owner"
+                  className="flex h-10 w-10 cursor-not-allowed items-center justify-center rounded-full bg-background/50 text-foreground/30 transition-colors"
+                  aria-label="Instagram profile link pending confirmation"
+                >
+                  <Instagram className="h-4 w-4" />
+                </span>
+              )}
+
+              {hasFacebook ? (
+                <a
+                  href={siteConfig.social.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex h-10 w-10 items-center justify-center rounded-full bg-background text-foreground/60 transition-colors hover:bg-forest hover:text-white"
+                  aria-label="Visit NGM Landscape on Facebook"
+                >
+                  <Facebook className="h-4 w-4" />
+                </a>
+              ) : (
+                <span
+                  title="Official Facebook page link pending confirmation from owner"
+                  className="flex h-10 w-10 cursor-not-allowed items-center justify-center rounded-full bg-background/50 text-foreground/30 transition-colors"
+                  aria-label="Facebook page link pending confirmation"
+                >
+                  <Facebook className="h-4 w-4" />
+                </span>
+              )}
             </div>
+            {!hasInstagram && !hasFacebook && (
+              <p className="mt-2 text-[11px] text-muted-foreground/70">
+                Official social profile links will be connected upon verification.
+              </p>
+            )}
           </div>
 
           <div>
             <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground">
-              Services
+              Core Services
             </h3>
             <ul className="mt-4 space-y-3">
               {serviceLinks.map((link) => (
@@ -78,7 +113,7 @@ export function Footer() {
 
           <div>
             <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground">
-              Company
+              Company &amp; Service Areas
             </h3>
             <ul className="mt-4 space-y-3">
               {companyLinks.map((link) => (
@@ -101,25 +136,27 @@ export function Footer() {
             <ul className="mt-4 space-y-4">
               <li>
                 <a
-                  href="tel:7782331599"
+                  href={`tel:${siteConfig.phone.replace(/[^0-9]/g, '')}`}
                   className="flex items-center gap-3 text-sm text-muted-foreground transition-colors hover:text-forest"
+                  aria-label={`Call NGM Landscape at ${siteConfig.phone}`}
                 >
-                  <Phone className="h-4 w-4 shrink-0" />
-                  778-233-1599
+                  <Phone className="h-4 w-4 shrink-0 text-forest" />
+                  {siteConfig.phone}
                 </a>
               </li>
               <li>
                 <a
-                  href="mailto:info@ngmlandscape.ca"
+                  href={`mailto:${siteConfig.email}`}
                   className="flex items-center gap-3 text-sm text-muted-foreground transition-colors hover:text-forest"
+                  aria-label={`Email NGM Landscape at ${siteConfig.email}`}
                 >
-                  <Mail className="h-4 w-4 shrink-0" />
-                  info@ngmlandscape.ca
+                  <Mail className="h-4 w-4 shrink-0 text-forest" />
+                  {siteConfig.email}
                 </a>
               </li>
               <li className="flex items-center gap-3 text-sm text-muted-foreground">
-                <MapPin className="h-4 w-4 shrink-0" />
-                Maple Ridge, BC
+                <MapPin className="h-4 w-4 shrink-0 text-forest" />
+                Maple Ridge, BC (Serving Lower Mainland &amp; Fraser Valley)
               </li>
             </ul>
           </div>
@@ -127,12 +164,10 @@ export function Footer() {
 
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 sm:flex-row">
           <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} Najm Garden & Maintenance Ltd. All
-            rights reserved.
+            © {new Date().getFullYear()} Najm Garden &amp; Maintenance Ltd. All rights reserved.
           </p>
-          <p className="text-xs text-muted-foreground">
-            Serving Maple Ridge, Pitt Meadows, Surrey, Coquitlam, Burnaby,
-            Vancouver & the Lower Mainland
+          <p className="text-xs text-muted-foreground text-center sm:text-right">
+            Serving Maple Ridge, Pitt Meadows, Mission, Langley, Coquitlam, Port Coquitlam, Surrey, Burnaby &amp; the Lower Mainland / Fraser Valley
           </p>
         </div>
       </div>

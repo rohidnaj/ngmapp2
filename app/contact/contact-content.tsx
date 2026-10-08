@@ -36,12 +36,16 @@ const contactInfo = [
 ];
 
 const serviceOptions = [
-  'Lawn Care',
-  'Garden Maintenance',
-  'Landscape Design',
-  'Seasonal Cleanup',
-  'Irrigation Systems',
-  'Power Washing',
+  'Lawn mowing, weeding and edging',
+  'Hedge and shrub trimming',
+  'Planting flowers, trees and shrubs',
+  'Garden bed mulching',
+  'Fertilizer and weed control',
+  'Spring cleanup',
+  'Fall cleanup',
+  'Garden design and consultation',
+  'Power washing decks and patios',
+  'Drip irrigation for gardens',
   'Other',
 ];
 
@@ -101,7 +105,7 @@ export function ContactContent() {
         <div className="absolute inset-0">
           <Image
             src="https://images.pexels.com/photos/4869084/pexels-photo-4869084.jpeg?auto=compress&cs=tinysrgb&w=1920"
-            alt="Serene poolside garden setting"
+            alt="Residential landscape and garden care in Maple Ridge BC"
             fill
             priority
             sizes="100vw"

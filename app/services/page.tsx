@@ -1,194 +1,133 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Check, ArrowRight, Leaf } from 'lucide-react';
+import { Check, ArrowRight, Leaf, Droplets } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Reveal } from '@/components/site/reveal';
+import { services, siteConfig } from '@/lib/site-data';
 
 export const metadata: Metadata = {
-  title: 'Services | Landscaping & Garden Maintenance Maple Ridge BC',
+  title: 'Landscaping & Garden Maintenance Services | Maple Ridge BC',
   description:
-    'Professional landscaping services in Maple Ridge BC: lawn care, garden maintenance, landscape design, seasonal cleanup, irrigation systems, power washing, and more.',
+    'Core landscaping services in Maple Ridge & Lower Mainland: lawn mowing & edging, hedge trimming, planting, garden mulching, weed control, cleanups, drip irrigation & power washing.',
+  alternates: {
+    canonical: 'https://ngmlandscape.ca/services',
+  },
+  openGraph: {
+    title: 'Landscaping & Garden Maintenance Services | NGM Landscape',
+    description:
+      'Professional lawn care, garden maintenance, planting, mulching, drip irrigation, and seasonal cleanups serving Maple Ridge and the Lower Mainland / Fraser Valley.',
+    url: 'https://ngmlandscape.ca/services',
+    type: 'website',
+  },
 };
 
-const detailedServices = [
-  {
-    id: 'lawn-care',
-    title: 'Lawn Care',
-    description:
-      'Keep your lawn healthy, green, and perfectly manicured with our comprehensive lawn care services. We handle everything from regular mowing to weed control.',
-    image:
-      'https://images.pexels.com/photos/6728925/pexels-photo-6728925.jpeg?auto=compress&cs=tinysrgb&w=1200&fm=webp',
-    features: [
-      'Lawn mowing with professional-grade equipment',
-      'Precise edging along walkways and garden beds',
-      'Weeding of lawn perimeters and cracks',
-      'Targeted weed control treatments',
-      'General yard and lawn maintenance',
-    ],
-  },
-  {
-    id: 'garden-maintenance',
-    title: 'Garden Maintenance',
-    description:
-      'Complete garden care to keep your beds looking their best. We monitor plant health, remove weeds, and maintain a neat appearance year-round.',
-    image:
-      'https://images.pexels.com/photos/38936347/pexels-photo-38936347.jpeg?auto=compress&cs=tinysrgb&w=1200&fm=webp',
-    features: [
-      'Thorough garden bed cleanup',
-      'Targeted weeding of flower beds and soil areas',
-      'Routine bed maintenance and soil cultivation',
-      'Expert plant care and health monitoring',
-      'Fresh mulching for insulation and protection',
-    ],
-  },
-  {
-    id: 'hedge-shrub-trimming',
-    title: 'Hedge & Shrub Trimming',
-    description:
-      'Precise trimming and shaping of hedges, shrubs, and bushes to maintain clean, beautiful structure for your property.',
-    image:
-      'https://images.pexels.com/photos/38936334/pexels-photo-38936334.jpeg?auto=compress&cs=tinysrgb&w=1200&fm=webp',
-    features: [
-      'Hedge trimming and leveling',
-      'Shrub shaping and pruning',
-      'Removal of dead wood and stray branches',
-      'Complete cleanup and disposal of trimmings',
-      'General shaping and aesthetic maintenance',
-    ],
-  },
-  {
-    id: 'planting',
-    title: 'Planting',
-    description:
-      'Expert planting of annuals, perennials, shrubs, and trees to add vibrant colour, structure, and value to your landscape.',
-    image:
-      'https://images.pexels.com/photos/7728050/pexels-photo-7728050.jpeg?auto=compress&cs=tinysrgb&w=1200&fm=webp',
-    features: [
-      'Seasonal flower planting',
-      'Shrub and bush installation',
-      'Tree planting and anchoring',
-      'Soil preparation and root booster application',
-      'Proper spacing and depth configuration',
-    ],
-  },
-  {
-    id: 'mulching-fertilizing',
-    title: 'Mulching & Fertilizing',
-    description:
-      'Nourish your soil and plants while suppressing weed growth. We apply premium mulch and seasonal fertilizers for optimal growth.',
-    image:
-      'https://images.pexels.com/photos/5807154/pexels-photo-5807154.jpeg?auto=compress&cs=tinysrgb&w=1200&fm=webp',
-    features: [
-      'Premium dark or bark mulching',
-      'Garden bed mulch replenishment',
-      'Customized fertilizer application programs',
-      'Soil nourishment treatments',
-      'Weed growth suppression strategies',
-    ],
-  },
-  {
-    id: 'seasonal-cleanup',
-    title: 'Seasonal Cleanup',
-    description:
-      'Prepare your yard for changing weather. We clear leaves, branches, and debris in the spring and fall to keep your landscape healthy.',
-    image:
-      'https://images.pexels.com/photos/16442678/pexels-photo-16442678.jpeg?auto=compress&cs=tinysrgb&w=1200&fm=webp',
-    features: [
-      'Comprehensive spring cleanup and leaf blowing',
-      'Fall yard cleanup and garden winterization',
-      'Leaf rake, removal, and eco-friendly composting',
-      'Debris clearing and lawn aerating prep',
-      'General seasonal yard maintenance',
-    ],
-  },
-  {
-    id: 'garden-design',
-    title: 'Garden Design',
-    description:
-      'Professional design consultations and custom concepts to turn your yard into a beautiful, harmonious outdoor living space.',
-    image: '/images/garden-design.jpg',
-    features: [
-      'On-site design consultations',
-      'Harmonious plant layout concepts',
-      'Material and color coordination',
-      'Functional space planning',
-      'Step-by-step planting schedules',
-    ],
-  },
-  {
-    id: 'drip-irrigation',
-    title: 'Drip Irrigation',
-    description:
-      'Keep your garden beds watered automatically and efficiently, conserving water while keeping plants hydrated.',
-    image: '/images/drip-irrigation.jpg',
-    features: [
-      'Custom drip irrigation system design',
-      'Professional installation of drip emitters and tubing',
-      'Water conservation settings',
-      'System testing and configuration',
-    ],
-  },
-  {
-    id: 'power-washing',
-    title: 'Power Washing',
-    description:
-      'Restore dirty, stained surfaces back to their original state. We blast away grime, moss, and dirt from patios, walkways, and driveways.',
-    image: '/images/power-washing.jpg',
-    features: [
-      'Driveway power washing and cleaning',
-      'Sidewalk and walkway restoration',
-      'Patio and deck cleaning',
-      'Moss, algae, and grime removal',
-      'Surface pre-treatment and post-rinsing',
-    ],
-  },
-  {
-    id: 'outdoor-lighting',
-    title: 'Outdoor Lighting Design',
-    description:
-      'Highlight the features of your landscape and improve property safety at night with custom lighting design.',
-    image: '/images/outdoor-lighting.jpg',
-    features: [
-      'Landscape accent lighting concepts',
-      'Walkway and path illumination design',
-      'Energy-efficient LED layouts',
-      'Nighttime safety and security enhancement',
-    ],
-  },
-];
-
 export default function ServicesPage() {
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://ngmlandscape.ca',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Services',
+        item: 'https://ngmlandscape.ca/services',
+      },
+    ],
+  };
+
+  const serviceListSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    itemListElement: services.map((service, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      item: {
+        '@type': 'Service',
+        name: service.title,
+        description: service.description,
+        provider: {
+          '@type': 'LocalBusiness',
+          name: siteConfig.name,
+          telephone: siteConfig.phone,
+          address: {
+            '@type': 'PostalAddress',
+            addressLocality: 'Maple Ridge',
+            addressRegion: 'BC',
+            addressCountry: 'CA',
+          },
+        },
+      },
+    })),
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceListSchema) }}
+      />
+
       {/* Hero */}
       <section className="relative flex min-h-[50vh] items-center justify-center overflow-hidden pt-20">
         <div className="absolute inset-0">
           <Image
             src="https://images.pexels.com/photos/8143684/pexels-photo-8143684.jpeg?auto=compress&cs=tinysrgb&w=1920"
-            alt="Landscaped outdoor patio"
+            alt="Well-maintained residential garden bed and lawn in the Pacific Northwest"
             fill
             priority
             sizes="100vw"
             className="object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/50" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60" />
         </div>
         <div className="relative z-10 mx-auto max-w-3xl px-4 text-center">
           <Reveal>
-            <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl md:text-6xl text-balance">
-              Our Services
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-medium text-white backdrop-blur-md">
+              <Leaf className="h-3.5 w-3.5 text-green-400" />
+              Core Landscaping &amp; Maintenance Services
+            </span>
+            <h1 className="mt-4 text-4xl font-semibold tracking-tight text-white sm:text-5xl md:text-6xl text-balance">
+              Landscaping Services in Maple Ridge &amp; Lower Mainland
             </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-base text-white/80 sm:text-lg text-balance">
-              Professional landscaping and garden maintenance services tailored
-              to your property&apos;s needs.
+            <p className="mx-auto mt-6 max-w-2xl text-base text-white/90 sm:text-lg text-balance">
+              Reliable, professional garden care, lawn maintenance, seasonal cleanups,
+              and drip irrigation for homes and properties in Maple Ridge and surrounding areas.
             </p>
           </Reveal>
         </div>
       </section>
 
+      {/* Quick Navigation Jump Bar */}
+      <section className="border-b border-border bg-muted/30 py-4">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-wrap items-center justify-center gap-2 text-xs">
+            <span className="font-semibold text-foreground">Jump to service:</span>
+            {services.map((s) => (
+              <a
+                key={s.id}
+                href={`#${s.id}`}
+                className="rounded-full border border-border bg-card px-3 py-1 font-medium text-muted-foreground transition-colors hover:border-forest hover:text-forest"
+              >
+                {s.title}
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Detailed Services */}
-      {detailedServices.map((service, idx) => (
+      {services.map((service, idx) => (
         <section
           key={service.id}
           id={service.id}
@@ -202,9 +141,7 @@ export default function ServicesPage() {
                 idx % 2 === 1 ? 'lg:grid-flow-dense' : ''
               }`}
             >
-              <Reveal
-                className={idx % 2 === 1 ? 'lg:col-start-2' : ''}
-              >
+              <Reveal className={idx % 2 === 1 ? 'lg:col-start-2' : ''}>
                 <span className="text-sm font-semibold uppercase tracking-widest text-forest">
                   Service {String(idx + 1).padStart(2, '0')}
                 </span>
@@ -224,28 +161,48 @@ export default function ServicesPage() {
                     </li>
                   ))}
                 </ul>
-                <Button
-                  asChild
-                  className="mt-8 rounded-full bg-forest text-white hover:bg-forest-light"
-                >
-                  <Link href="/quote">
-                    Get a Quote
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
+
+                <div className="mt-8 flex flex-wrap items-center gap-4">
+                  <Button
+                    asChild
+                    className="rounded-full bg-forest text-white hover:bg-forest-light"
+                  >
+                    <Link href="/quote">
+                      Request an Estimate
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+
+                  {service.id === 'drip-irrigation' && (
+                    <Button
+                      asChild
+                      variant="outline"
+                      className="rounded-full border-forest/40 text-forest hover:bg-forest/10"
+                    >
+                      <Link href="/services/drip-irrigation">
+                        <Droplets className="mr-2 h-4 w-4" />
+                        Explore Drip Irrigation Details
+                      </Link>
+                    </Button>
+                  )}
+                </div>
               </Reveal>
+
               <Reveal
                 delay={200}
                 className={idx % 2 === 1 ? 'lg:col-start-1 lg:row-start-1' : ''}
               >
-                <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-lg">
+                <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-border shadow-lg">
                   <Image
                     src={service.image}
-                    alt={service.title}
+                    alt={`Illustration of ${service.title} by NGM Landscape`}
                     fill
                     sizes="(max-width: 1024px) 100vw, 50vw"
                     className="object-cover"
                   />
+                  <div className="absolute bottom-3 left-3 rounded-md bg-black/60 px-3 py-1 text-xs font-medium text-white backdrop-blur-md">
+                    Service Illustration
+                  </div>
                 </div>
               </Reveal>
             </div>
@@ -259,22 +216,34 @@ export default function ServicesPage() {
           <Reveal>
             <Leaf className="mx-auto h-10 w-10 text-white/60" />
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl text-balance">
-              Ready to get started?
+              Need Reliable Landscaping in Maple Ridge or the Lower Mainland?
             </h2>
-            <p className="mx-auto mt-4 max-w-xl text-base text-white/80">
-              Request a free estimate and let&apos;s discuss how we can transform
-              your outdoor space.
+            <p className="mx-auto mt-4 max-w-xl text-base text-white/90">
+              Get in touch with Najmudin Najm and the NGM team for honest advice,
+              thorough workmanship, and a clear estimate.
             </p>
-            <Button
-              asChild
-              size="lg"
-              className="mt-8 rounded-full bg-white px-8 text-forest hover:bg-white/90"
-            >
-              <Link href="/quote">
-                Get Free Estimate
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
+            <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+              <Button
+                asChild
+                size="lg"
+                className="rounded-full bg-white px-8 text-forest hover:bg-white/90 font-semibold"
+              >
+                <Link href="/quote">
+                  Request an Estimate
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="rounded-full border-white/30 bg-transparent px-8 text-white hover:bg-white/10"
+              >
+                <a href={`tel:${siteConfig.phone.replace(/[^0-9]/g, '')}`}>
+                  Call {siteConfig.phone}
+                </a>
+              </Button>
+            </div>
           </Reveal>
         </div>
       </section>
